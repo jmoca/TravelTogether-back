@@ -1,5 +1,4 @@
-package com.beginsecure.traveltogetherback.modelos;
-
+package dijj.traveltogetherback.modelo;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +14,7 @@ import java.util.Set;
 @ToString
 
 @Table(name = "actividades", schema = "public", catalog = "postgres")
-public class Actividades {
+public class Actividad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_actividad")

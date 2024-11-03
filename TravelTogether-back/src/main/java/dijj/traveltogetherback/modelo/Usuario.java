@@ -1,4 +1,4 @@
-package com.beginsecure.traveltogetherback.modelos;
+package dijj.traveltogetherback.modelo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;

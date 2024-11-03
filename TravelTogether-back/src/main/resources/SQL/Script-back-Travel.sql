@@ -1,7 +1,7 @@
 -- Crear la tabla Usuarios
 CREATE TABLE Usuarios (
     id_usuario SERIAL PRIMARY KEY,
-    nombre VARCHAR(100),
+    nombre VARCHAR(100)
     
 );
 
@@ -30,7 +30,6 @@ CREATE TABLE Grupos (
 CREATE TABLE Usuarios_Grupos (
     id_usuario INT,
     id_grupo INT,
-    fecha_union DATE,
     PRIMARY KEY (id_usuario, id_grupo),
     FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
     FOREIGN KEY (id_grupo) REFERENCES Grupos(id_grupo)
@@ -75,7 +74,6 @@ CREATE TABLE Itinerario (
 CREATE TABLE Amigos (
     id_usuario1 INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
     id_usuario2 INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
-    fecha_amistad DATE DEFAULT CURRENT_DATE,
     PRIMARY KEY (id_usuario1, id_usuario2),
     CHECK (id_usuario1 <> id_usuario2) 
 );

@@ -1,4 +1,4 @@
-package com.beginsecure.traveltogetherback;
+package dijj.traveltogetherback;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

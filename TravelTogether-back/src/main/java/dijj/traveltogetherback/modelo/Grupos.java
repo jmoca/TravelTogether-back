@@ -1,4 +1,4 @@
-package com.beginsecure.traveltogetherback.modelos;
+package dijj.traveltogetherback.modelo;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,5 +36,5 @@ public class Grupos {
     // Relación inversa: Un grupo puede tener muchas actividades
     @OneToMany
     @JoinColumn(name = "id_actividad", nullable = false)
-    private List<Actividades> actividades;
+    private List<Actividad> actividades;
 }

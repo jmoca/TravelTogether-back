@@ -1,4 +1,4 @@
-package com.beginsecure.traveltogetherback;
+package dijj.traveltogetherback;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
