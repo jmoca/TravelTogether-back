@@ -15,6 +15,7 @@ CREATE TABLE Registro (
     FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
 );
 
+
 -- Crear la tabla Grupos
 CREATE TABLE Grupos (
     id_grupo SERIAL PRIMARY KEY,

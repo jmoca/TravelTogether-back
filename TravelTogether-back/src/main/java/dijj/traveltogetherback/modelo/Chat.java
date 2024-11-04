@@ -14,7 +14,7 @@ import lombok.*;
 public class Chat {
     @Id
     @Column(name = "id_chat")
-    private Integer id;
+    private Long id;
     @Column(name = "mensaje")
     private String mensaje;
     @Column(name = "fecha_envio")

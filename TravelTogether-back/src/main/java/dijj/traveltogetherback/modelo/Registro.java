@@ -16,7 +16,7 @@ import java.util.Date;
 public class Registro {
     @Id
     @Column(name = "id_registro")
-    private Integer id;
+    private Long id;
     @Column(name = "email")
     private String email;
     @Column(name = "contrasena")

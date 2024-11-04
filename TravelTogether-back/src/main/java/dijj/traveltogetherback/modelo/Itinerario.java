@@ -19,7 +19,7 @@ import java.util.Date;
 public class Itinerario {
     @Id
     @Column (name = "id_itinerario")
-    private Integer id;
+    private Long id;
     @Column (name = "ubicacion")
     private String Ubicacion;
     @Column (name = "descripcion_detallada")

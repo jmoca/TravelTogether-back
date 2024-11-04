@@ -1,11 +1,8 @@
 package dijj.traveltogetherback.modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,13 +10,23 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-
+@Entity
 @Table(name = "usuario", schema = "public", catalog = "postgres")
 public class Usuario {
     @Id
     @Column(name = "id_usuario")
-    private Integer id;
+    private Long id;
 
     @Column(name = "nombre")
     private String nombre;
+
+    @ManyToMany
+    @JoinTable(
+            name = "Amigos",
+            joinColumns = @JoinColumn(name = "id_usuario1"),
+            inverseJoinColumns = @JoinColumn(name = "id_usuario2")
+    )
+    private Set<Usuario> amigos;
+
+
 }
