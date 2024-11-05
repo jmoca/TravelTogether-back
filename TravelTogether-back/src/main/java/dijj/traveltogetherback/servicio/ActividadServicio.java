@@ -37,4 +37,8 @@ public class ActividadServicio implements IActividadServicio {
         actividadRepositorio.deleteById(idActividad);
 
     }
+
+    public Actividad nuevaActividad(Long id_usuario){
+        return null;
+    }
 }

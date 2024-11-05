@@ -13,20 +13,25 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString
 
+@Entity
 @Table(name = "actividades", schema = "public", catalog = "postgres")
 public class Actividad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_actividad")
-    private Long id;
+    private Long id_actividad;
     @Column(name = "nombre_actividad")
     private String nombre;
     @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "fecha_actividad")
     private String fecha;
-    // Relación con Grupos
+
     @ManyToOne
     @JoinColumn(name = "id_grupo", nullable = false)
-    private Set<Grupos> grupo;
+    private Grupo grupo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuarios;
 }

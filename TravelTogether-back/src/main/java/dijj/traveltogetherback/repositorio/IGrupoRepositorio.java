@@ -1,7 +1,7 @@
 package dijj.traveltogetherback.repositorio;
 
-import dijj.traveltogetherback.modelo.Grupos;
+import dijj.traveltogetherback.modelo.Grupo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IGrupoRepositorio extends JpaRepository<Grupos, Long> {
+public interface IGrupoRepositorio extends JpaRepository<Grupo, Long> {
 }

@@ -12,11 +12,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Entity
 @Table(name = "registro", schema = "public", catalog = "postgres")
 public class Registro {
     @Id
     @Column(name = "id_registro")
-    private Long id;
+    private Long id_registro;
     @Column(name = "email")
     private String email;
     @Column(name = "contrasena")
@@ -25,6 +26,6 @@ public class Registro {
     private Date fecha_registro;
     @OneToOne
     @JoinColumn(name = "id_usuario", nullable = false)
-    private Integer id_usuario;
+    private Usuario id_usuario;
 
 }

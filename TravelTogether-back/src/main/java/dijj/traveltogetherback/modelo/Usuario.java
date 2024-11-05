@@ -10,12 +10,13 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+
 @Entity
 @Table(name = "usuario", schema = "public", catalog = "postgres")
 public class Usuario {
     @Id
     @Column(name = "id_usuario")
-    private Long id;
+    private Long id_usuario;
 
     @Column(name = "nombre")
     private String nombre;

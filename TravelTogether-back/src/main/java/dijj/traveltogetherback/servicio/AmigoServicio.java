@@ -1,7 +1,5 @@
 package dijj.traveltogetherback.servicio;
 
-import dijj.traveltogetherback.modelo.Amigo;
-import dijj.traveltogetherback.modelo.Usuario;
 import dijj.traveltogetherback.repositorio.IAmigoRepositorio;
 
 import java.util.List;

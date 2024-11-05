@@ -1,18 +1,27 @@
 package dijj.traveltogetherback.modelo;
 
 import jakarta.persistence.*;
-import dijj.traveltogetherback.modelo.Actividad;
-import dijj.traveltogetherback.modelo.Usuario;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Votos")
 public class Voto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_voto")
+    private Long id_voto;
 
+    @Column(name = "tipo_voto")
+    private boolean tipo_voto;
 
     @ManyToOne
-    @MapsId("idActividad")
-    @JoinColumn(name = "id_actividad")
+    @JoinColumn(name = "id_actividad", referencedColumnName = "id_actividad", nullable = false)
     private Actividad actividad;
 
     @ManyToOne
@@ -22,7 +31,5 @@ public class Voto {
 
     @Column(name = "fecha_voto", nullable = false)
     private LocalDateTime fechaVoto = LocalDateTime.now();
-
-
 
 }

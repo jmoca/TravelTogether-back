@@ -13,13 +13,13 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString
 
-
-@Table(name = "grupo", schema = "public", catalog = "postgres")
-public class Grupos {
+@Entity
+@Table(name = "grupos", schema = "public", catalog = "postgres")
+public class Grupo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_grupo")
-    private Long id;
+    private Long id_grupo;
 
     @Column(name = "nombre_grupo")
     private String nombre;
@@ -34,7 +34,15 @@ public class Grupos {
     private String fechaCreacion;
 
     // Relación inversa: Un grupo puede tener muchas actividades
-    @OneToMany
-    @JoinColumn(name = "id_actividad", nullable = false)
+    @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Actividad> actividades;
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuarios_grupos",
+            schema = "public",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_grupo")
+    )
+    private Set<Usuario> usuarios;
 }

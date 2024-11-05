@@ -83,6 +83,7 @@ CREATE TABLE Amigos (
 CREATE TABLE Votos (
     id_actividad INT REFERENCES Actividades(id_actividad) ON DELETE CASCADE,
     id_usuario INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
+    tipo_voto BOOLEAN,
     fecha_voto TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_actividad, id_usuario)
 );
