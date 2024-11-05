@@ -15,19 +15,19 @@ import java.util.Set;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario" ,insertable = false, updatable = false)
-    private Long idUsuario;
+    @Column(name = "id_usuario")
+    private Long id_usuario;
 
     @Column(name = "nombre")
     private String nombre;
 
-   @ManyToMany
-   @JoinTable(
-           name = "Amigos",
-           joinColumns = @JoinColumn(name = "id_usuario"), // Cambia "usuario" a "id_usuario"
-           inverseJoinColumns = @JoinColumn(name = "amigo") // Asume que "amigo" es correcto
-   )
-   private Set<Usuario> amigos;
+    //@ManyToMany
+    //@JoinTable(
+    //        name = "Amigos",
+    //        joinColumns = @JoinColumn(name = "id_usuario"),
+    //        inverseJoinColumns = @JoinColumn(name = "amigo")
+    //)
+    //private Set<Usuario> amigos;
 
 
 

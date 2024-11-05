@@ -31,11 +31,11 @@ public class Actividad {
     private String fecha;
 
     @ManyToOne
-    @JoinColumn(name = "id_grupo", nullable = false)
+    @JoinColumn(name = "id_grupo")
     private Grupo grupo;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario")
     private Usuario usuarios;
 
 }

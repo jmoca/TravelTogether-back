@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ManyToAny;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -23,13 +24,13 @@ public class Itinerario {
     @Column (name = "descripcion_detallada")
     private String Descripcion;
     @Column (name = "fecha_itinerario")
-    private Date Fecha;
+    private LocalDateTime  Fecha;
     @Column (name = "hora_inicio")
-    private Date Hora_inicio;
+    private LocalDateTime Hora_inicio;
     @Column (name = "hora_fin")
-    private Date Hora_fin;
+    private LocalDateTime  Hora_fin;
     @ManyToOne
-    @JoinColumn(name = "id_actividad", nullable = false)
+    @JoinColumn(name = "id_actividad")
     private Actividad actividad;
 
 }

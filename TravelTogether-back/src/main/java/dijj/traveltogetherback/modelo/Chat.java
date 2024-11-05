@@ -25,11 +25,9 @@ public class Chat {
     @Column(name = "fecha_envio")
     private String fecha;
 
-    @OneToMany
-    @JoinColumn(name = "id_grupo", nullable = false)
-    private Set<Grupo> id_grupo;
+    @ManyToOne
+    @JoinColumn(name = "id_grupo")
+    private Grupo id_grupo;
 
-    @OneToMany
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Set<Usuario> id_usuario;
+
 }

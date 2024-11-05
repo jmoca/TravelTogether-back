@@ -25,7 +25,7 @@ public class Registro {
     @Column(name = "fecha_registro")
     private Date fecha_registro;
     @OneToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario")
     private Usuario id_usuario;
 
 }

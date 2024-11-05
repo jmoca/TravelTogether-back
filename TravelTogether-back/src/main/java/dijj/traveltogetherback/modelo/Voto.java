@@ -21,14 +21,14 @@ public class Voto {
     private boolean tipo_voto;
 
     @ManyToOne
-    @JoinColumn(name = "id_actividad", referencedColumnName = "id_actividad", nullable = false)
+    @JoinColumn(name = "id_actividad")
     private Actividad actividad;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @Column(name = "fecha_voto", nullable = false)
+    @Column(name = "fecha_voto")
     private LocalDateTime fechaVoto = LocalDateTime.now();
 
 }

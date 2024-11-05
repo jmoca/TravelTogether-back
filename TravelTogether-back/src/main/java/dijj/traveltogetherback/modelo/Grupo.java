@@ -18,7 +18,7 @@ import java.util.Set;
 public class Grupo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_grupo", insertable=false, updatable=false)
+    @Column(name = "id_grupo")
     private Long id_grupo;
 
     @Column(name = "nombre_grupo")
@@ -30,19 +30,20 @@ public class Grupo {
     @Column(name = "integrantes")
     private int integrantes;
 
+    @Column(name = "ubicacion")
+    private String ubicacion;
+
     @Column(name = "fecha_creacion")
     private String fechaCreacion;
 
-    // Relación inversa: Un grupo puede tener muchas actividades
-    @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Actividad> actividades;
+
 
     @ManyToMany
     @JoinTable(
             name = "usuarios_grupos",
             schema = "travel",
-            joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_grupo")
+            joinColumns = @JoinColumn(name = "grupo"),
+            inverseJoinColumns = @JoinColumn(name = "usuario")
     )
     private Set<Usuario> usuarios;
 }
