@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -103,7 +102,12 @@ public class GrupoServicio implements IGrupoServicio {
 
         return partiDTO;
     }
-    public List<Grupo> todoGrupo(){
-        return grupoRepositorio.findAll();
+    public Optional<Grupo> obtenerGruposPorUsuario(Long id_usuario){
+        Optional<Usuario> usuario = usuarioRepositorio.findById(id_usuario);
+        if (usuario.isPresent()) {
+            return grupoRepositorio.findById(usuario.get().getId_usuario());
+        } else {
+            throw new RuntimeException("Usuario no encontrado con id: " + id_usuario);
+        }
     }
 }

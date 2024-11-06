@@ -19,7 +19,7 @@ CREATE TABLE Grupos (
                         nombre_grupo VARCHAR(100) NOT NULL,
                         descripcion VARCHAR(255),
                         fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        id_admin INTEGER REFERENCES Usuario(id_usuario) ON DELETE SET NULL NOT NULL
+                        id_admin INTEGER REFERENCES Usuario(id_usuario) ON DELETE SET NULL
 );
 
 -- Crear la tabla Usuarios_Grupos
@@ -59,13 +59,14 @@ CREATE TABLE Itinerario (
                             descripcion_detallada VARCHAR(255)
 );
 
+
 -- Crear la tabla Amigos
 CREATE TABLE Amigos (
-                        id_usuario INTEGER REFERENCES Usuario(id_usuario) ON DELETE CASCADE,
-                        id_amigo INTEGER REFERENCES Usuario(id_usuario) ON DELETE CASCADE,
-                        PRIMARY KEY (id_usuario, id_amigo),
-                        CONSTRAINT fk_usuario1 FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario) ON DELETE CASCADE,
-                        CONSTRAINT fk_usuario2 FOREIGN KEY (id_amigo) REFERENCES Usuario(id_usuario) ON DELETE CASCADE
+                        id_usuario1 INTEGER NOT NULL,
+                        id_usuario2 INTEGER NOT NULL,
+                        PRIMARY KEY (id_usuario1, id_usuario2),
+                        CONSTRAINT fk_usuario1 FOREIGN KEY (id_usuario1) REFERENCES Usuario(id_usuario) ON DELETE CASCADE,
+                        CONSTRAINT fk_usuario2 FOREIGN KEY (id_usuario2) REFERENCES Usuario(id_usuario) ON DELETE CASCADE
 );
 -- Crear la tabla Votos
 CREATE TABLE Votos (

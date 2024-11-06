@@ -1,24 +1,42 @@
 package dijj.traveltogetherback.controlador;
 
+import dijj.traveltogetherback.DTO.VotoDTO;
+import dijj.traveltogetherback.modelo.Actividad;
+import dijj.traveltogetherback.servicio.ActividadServicio;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/viaje/actividad")
 public class ActividadControlador {
 
-    @PostMapping("/viaje/actividad/nueva")
-    public void proponerActividad(){
+    private final ActividadServicio actividadServicio;
 
+    public ActividadControlador(ActividadServicio actividadServicio) {
+        this.actividadServicio = actividadServicio;
     }
 
-    @PostMapping("/viaje/actividad/votar")
-    public void votarActividad(){
-
+    // Crear una nueva actividad
+    @PostMapping("/nueva")
+    public ResponseEntity<Actividad> proponerActividad(@RequestParam Long id_usuario, @RequestBody Actividad actividad) {
+        Actividad nuevaActividad = actividadServicio.crearActividad(id_usuario, actividad);
+        return ResponseEntity.ok(nuevaActividad);
     }
-    @GetMapping("/viaje/actividad")
-    public void verActividades(){
 
+    // Votar por una actividad
+    @PostMapping("/votar")
+    public ResponseEntity<VotoDTO> votarActividad(@RequestParam Long id_usuario, @RequestParam Long id_actividad, @RequestParam boolean tipo_voto) {
+        VotoDTO resultadoVoto = actividadServicio.votarActividad(id_usuario, id_actividad, tipo_voto);
+        return ResponseEntity.ok(resultadoVoto);
+    }
+
+    // Ver todas las actividades
+    @GetMapping
+    public ResponseEntity<Optional<Actividad>> verActividades(@RequestParam Long id_grupo) {
+        Optional<Actividad> actividades = actividadServicio.obtenerActividades(id_grupo);
+        return ResponseEntity.ok(actividades);
     }
 }
+

@@ -21,14 +21,10 @@ public class Usuario {
     @Column(name = "nombre")
     private String nombre;
 
-    //@ManyToMany
-    //@JoinTable(
-    //        name = "Amigos",
-    //        joinColumns = @JoinColumn(name = "id_usuario"),
-    //        inverseJoinColumns = @JoinColumn(name = "amigo")
-    //)
-    //private Set<Usuario> amigos;
+    @OneToMany(mappedBy = "usuario1", cascade = CascadeType.ALL)
+    private Set<Amigos> amigos1; // Relación de usuario1 en la tabla Amigos
 
-
+    @OneToMany(mappedBy = "usuario2", cascade = CascadeType.ALL)
+    private Set<Amigos> amigos2; // Relación de usuario2 en la tabla Amigos
 
 }

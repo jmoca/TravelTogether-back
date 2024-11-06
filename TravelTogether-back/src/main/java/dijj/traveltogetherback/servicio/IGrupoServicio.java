@@ -3,7 +3,7 @@ package dijj.traveltogetherback.servicio;
 import dijj.traveltogetherback.DTO.PartiDTO;
 import dijj.traveltogetherback.modelo.Grupo;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface IGrupoServicio {
     public Grupo crearGrupo(Grupo grupo);
@@ -14,5 +14,5 @@ public interface IGrupoServicio {
 
     public PartiDTO eliminarPartiGrup(Long id_usuario, Long id_grupo);
 
-    public List<Grupo> todoGrupo();
+    public Optional<Grupo> obtenerGruposPorUsuario(Long id_usuario);
 }

@@ -1,42 +1,68 @@
 package dijj.traveltogetherback.servicio;
 
+import dijj.traveltogetherback.DTO.VotoDTO;
 import dijj.traveltogetherback.modelo.Actividad;
+import dijj.traveltogetherback.modelo.Usuario;
+import dijj.traveltogetherback.modelo.Voto;
+
 import dijj.traveltogetherback.repositorio.IActividadRepositorio;
+import dijj.traveltogetherback.repositorio.IUsuarioRepositorio;
+import dijj.traveltogetherback.repositorio.IVotoRepositorio;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ActividadServicio implements IActividadServicio {
-    private IActividadRepositorio actividadRepositorio;
+public class ActividadServicio {
 
-    public ActividadServicio(IActividadRepositorio actividadRepositorio){
+    private final IActividadRepositorio actividadRepositorio;
+    private final IUsuarioRepositorio usuarioRepositorio;
+    private final IVotoRepositorio votoRepositorio;
+
+    public ActividadServicio(IActividadRepositorio actividadRepositorio, IUsuarioRepositorio usuarioRepositorio, IVotoRepositorio votoRepositorio) {
         this.actividadRepositorio = actividadRepositorio;
+        this.usuarioRepositorio = usuarioRepositorio;
+        this.votoRepositorio = votoRepositorio;
     }
 
-    @Override
-    public List<Actividad> todasLasActividades() {
-        return actividadRepositorio.findAll();
+    // Método para crear una nueva actividad
+    public Actividad crearActividad(Long idUsuario, Actividad actividad) {
+        Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(idUsuario);
+        if (usuarioOptional.isPresent()) {
+            actividad.setUsuarios(usuarioOptional.get());
+            return actividadRepositorio.save(actividad);
+        } else {
+            throw new IllegalArgumentException("Usuario no encontrado con id: " + idUsuario);
+        }
     }
 
-    @Override
-    public Actividad buscarActividadesPorNombre(String nombre) {
-        return actividadRepositorio.findByNombre(nombre);
+    // Método para votar por una actividad
+    public VotoDTO votarActividad(Long idUsuario, Long idActividad, boolean tipoVoto) {
+        Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(idUsuario);
+        Optional<Actividad> actividadOptional = actividadRepositorio.findById(idActividad);
+
+        if (usuarioOptional.isPresent() && actividadOptional.isPresent()) {
+            Voto voto = new Voto();
+            voto.setUsuario(usuarioOptional.get());
+            voto.setActividad(actividadOptional.get());
+            voto.setTipo_voto(tipoVoto);
+            Voto votoGuardado = votoRepositorio.save(voto);
+
+            return new VotoDTO(
+                    votoGuardado.getId_voto(),
+                    votoGuardado.isTipo_voto(),
+                    votoGuardado.getActividad().getId_actividad(),
+                    votoGuardado.getUsuario().getId_usuario(),
+                    votoGuardado.getFechaVoto()
+            );
+        } else {
+            throw new IllegalArgumentException("Usuario o Actividad no encontrada con los IDs proporcionados");
+        }
     }
 
-    @Override
-    public Actividad buscarActividadPorId(Long idActividad) {
-        return actividadRepositorio.findById(idActividad).orElse(null);
-    }
 
-    @Override
-    public Actividad guardarActividad(Actividad actividad) {
-        return actividadRepositorio.save(actividad);
-    }
-    public Actividad proponerActividad(Long id_usuario){
-        return null;
-    }
-    public Actividad votarActividad(Long id_usuario, Long id_actividad){
-        return null;
+    public Optional<Actividad> obtenerActividades(Long idGrupo) {
+        return actividadRepositorio.findById(idGrupo);
     }
 }
