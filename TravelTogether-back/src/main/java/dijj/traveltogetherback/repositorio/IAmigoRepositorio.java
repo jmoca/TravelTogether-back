@@ -8,5 +8,7 @@ import java.util.Set;
 
 public interface IAmigoRepositorio extends JpaRepository<Usuario, Long> {
     Usuario findByNombre(String nombre);
-    //Set<Amigos> findByUsuario1OrUsuario2(Usuario usuario1, Usuario usuario2);
+
+
+
 }

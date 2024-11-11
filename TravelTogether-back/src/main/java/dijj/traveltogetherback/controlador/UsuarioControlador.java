@@ -1,5 +1,6 @@
 package dijj.traveltogetherback.controlador;
 
+import dijj.traveltogetherback.DTO.UsuarioDTO;
 import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.modelo.Usuario;
 import dijj.traveltogetherback.servicio.GrupoServicio;
@@ -23,15 +24,10 @@ public class UsuarioControlador {
         this.grupoServicio = grupoServicio;
     }
 
-    //@GetMapping("/amigos")
-    //public ResponseEntity<List<Usuario>> listarAmigos(@RequestParam Long id_usuario) {
-    //    Set<Usuario> amigos = usuarioServicio.todosLosAmigos(id_usuario);
-    //    if (!amigos.isEmpty()) {
-    //        return ResponseEntity.ok(List.copyOf(amigos));
-    //    } else {
-    //        return ResponseEntity.notFound().build();
-    //    }
-    //}
+    @GetMapping("/amigos")
+    public Set<UsuarioDTO> obtenerAmigos(@RequestParam Long id_usuario) {
+        return usuarioServicio.obtenerAmigosDTO(id_usuario);
+    }
 
     @GetMapping("/viajes")
     public ResponseEntity<Optional<Grupo>> listarGrupos(@RequestParam Long id_usuario) {

@@ -24,4 +24,8 @@ public class Amigos {
     @ManyToOne
     @JoinColumn(name = "id_usuario2")
     private Usuario usuario2;
+
+    @Column(name = "fecha_amistad")
+    private String fecha_amistad;
+
 }

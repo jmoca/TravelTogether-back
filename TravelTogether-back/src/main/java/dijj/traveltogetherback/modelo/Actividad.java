@@ -27,8 +27,13 @@ public class Actividad {
     @Column(name = "descripcion")
     private String descripcion;
 
+    @Column(name = "multimedia")
+    private String multimedia;
+
     @Column(name = "fecha_actividad")
     private String fecha;
+
+
 
     @ManyToOne
     @JoinColumn(name = "id_grupo")
