@@ -33,7 +33,8 @@ public class Actividad {
     @Column(name = "fecha_actividad")
     private String fecha;
 
-
+    @Column(name = "lugar")
+    private String lugar;
 
     @ManyToOne
     @JoinColumn(name = "id_grupo")

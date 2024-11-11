@@ -1,5 +1,6 @@
 package dijj.traveltogetherback.servicio;
 
+import dijj.traveltogetherback.DTO.ActividadDTO;
 import dijj.traveltogetherback.DTO.VotoDTO;
 import dijj.traveltogetherback.modelo.Actividad;
 import dijj.traveltogetherback.modelo.Usuario;
@@ -11,7 +12,9 @@ import dijj.traveltogetherback.repositorio.IVotoRepositorio;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ActividadServicio {
@@ -62,7 +65,20 @@ public class ActividadServicio {
     }
 
 
-    public Optional<Actividad> obtenerActividades(Long idGrupo) {
-        return actividadRepositorio.findById(idGrupo);
+    public List<ActividadDTO> obtenerActividades(Long id_grupo) {
+        List<Actividad> actividades = actividadRepositorio.findAll();
+        return actividades.stream()
+                .filter(actividad -> actividad.getGrupo().getId_grupo().equals(id_grupo))
+                .map(actividad -> new ActividadDTO(
+                        actividad.getId_actividad(),
+                        actividad.getNombre(),
+                        actividad.getDescripcion(),
+                        actividad.getFecha(),
+                        actividad.getLugar(),
+                        actividad.getMultimedia(),
+                        null
+                ))
+                .collect(Collectors.toList());
     }
+
 }

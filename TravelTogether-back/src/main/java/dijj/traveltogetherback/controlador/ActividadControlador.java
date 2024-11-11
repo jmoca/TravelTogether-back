@@ -1,12 +1,13 @@
 package dijj.traveltogetherback.controlador;
 
+import dijj.traveltogetherback.DTO.ActividadDTO;
 import dijj.traveltogetherback.DTO.VotoDTO;
 import dijj.traveltogetherback.modelo.Actividad;
 import dijj.traveltogetherback.servicio.ActividadServicio;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/viaje/actividad")
@@ -34,8 +35,8 @@ public class ActividadControlador {
 
     // Ver todas las actividades
     @GetMapping
-    public ResponseEntity<Optional<Actividad>> verActividades(@RequestParam Long id_grupo) {
-        Optional<Actividad> actividades = actividadServicio.obtenerActividades(id_grupo);
+    public ResponseEntity<List<ActividadDTO>> verActividades(@RequestParam Long id_grupo) {
+        List<ActividadDTO> actividades = actividadServicio.obtenerActividades(id_grupo);
         return ResponseEntity.ok(actividades);
     }
 }
