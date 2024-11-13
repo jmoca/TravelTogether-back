@@ -1,7 +1,7 @@
 package dijj.traveltogetherback.controlador;
 
 
-import dijj.traveltogetherback.DTO.PartiDTO;
+import dijj.traveltogetherback.DTO.GrupoDTO;
 import dijj.traveltogetherback.DTO.eliminarDTO;
 import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.servicio.GrupoServicio;
@@ -26,20 +26,20 @@ public class GrupoControlador {
     }
     // RequestParam para recibir parametros
     @PostMapping("/participante/nuevo")
-    public ResponseEntity<PartiDTO> nuevoParticipante(@RequestParam Long id_usuario, @RequestParam Long id_grupo){
-        PartiDTO nuevogrupo = grupoServicio.nuevoPartiGrup(id_usuario, id_grupo);
+    public ResponseEntity<GrupoDTO> nuevoParticipante(@RequestParam Long id_usuario, @RequestParam Long id_grupo){
+        GrupoDTO nuevogrupo = grupoServicio.nuevoPartiGrup(id_usuario, id_grupo);
         return ResponseEntity.ok(nuevogrupo);
 
     }
     @GetMapping("/participantes")
-    public ResponseEntity<PartiDTO> verParticipante(@RequestParam Long id_grupo){
-        PartiDTO nuevogrupo = grupoServicio.verPartiGrupo(id_grupo);
+    public ResponseEntity<GrupoDTO> verParticipante(@RequestParam Long id_grupo){
+        GrupoDTO nuevogrupo = grupoServicio.verPartiGrupo(id_grupo);
         return ResponseEntity.ok(nuevogrupo);
 
     }
     @PostMapping("/participante/eliminar")
-    public ResponseEntity<PartiDTO> eliminarParticipante(@RequestBody eliminarDTO eliminar){
-        PartiDTO nuevogrupo = grupoServicio.eliminarPartiGrup(eliminar.getId_usuario(), eliminar.getId_grupo());
+    public ResponseEntity<GrupoDTO> eliminarParticipante(@RequestBody eliminarDTO eliminar){
+        GrupoDTO nuevogrupo = grupoServicio.eliminarPartiGrup(eliminar.getId_usuario(), eliminar.getId_grupo());
         return ResponseEntity.ok(nuevogrupo);
 
     }

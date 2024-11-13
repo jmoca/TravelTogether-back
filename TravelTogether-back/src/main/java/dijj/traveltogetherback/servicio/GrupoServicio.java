@@ -1,6 +1,6 @@
 package dijj.traveltogetherback.servicio;
 
-import dijj.traveltogetherback.DTO.PartiDTO;
+import dijj.traveltogetherback.DTO.GrupoDTO;
 import dijj.traveltogetherback.DTO.UsuarioDTO;
 import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.modelo.Usuario;
@@ -28,7 +28,7 @@ public class GrupoServicio implements IGrupoServicio {
     public Grupo crearGrupo(Grupo grupo){
         return grupoRepositorio.save(grupo);
     }
-    public PartiDTO nuevoPartiGrup(Long idUsuario, Long id_grupo){
+    public GrupoDTO nuevoPartiGrup(Long idUsuario, Long id_grupo){
 
         ArrayList<UsuarioDTO> usuariosdto = new ArrayList<>();
         Grupo grupo = grupoRepositorio.findById(id_grupo).orElseThrow(() -> new RuntimeException("No existe el grupo"));
@@ -44,18 +44,18 @@ public class GrupoServicio implements IGrupoServicio {
         grupoRepositorio.save(grupo);
 
 
-        PartiDTO partiDTO = new PartiDTO();
-        partiDTO.setId_grupo(grupo.getId_grupo());
-        partiDTO.setNombre(grupo.getNombre());
-        partiDTO.setDescripcion(grupo.getDescripcion());
-        partiDTO.setIntegrantes(grupo.getIntegrantes());
-        partiDTO.setUbicacion(grupo.getUbicacion());
-        partiDTO.setFechaCreacion(grupo.getFechaCreacion());
-        partiDTO.setUsuarios(usuariosdto);
+        GrupoDTO grupoDTO = new GrupoDTO();
+        grupoDTO.setId_grupo(grupo.getId_grupo());
+        grupoDTO.setNombre(grupo.getNombre());
+        grupoDTO.setDescripcion(grupo.getDescripcion());
+        grupoDTO.setIntegrantes(grupo.getIntegrantes());
+        grupoDTO.setUbicacion(grupo.getUbicacion());
+        grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
+        grupoDTO.setUsuarios(usuariosdto);
 
-        return partiDTO;
+        return grupoDTO;
     }
-    public  PartiDTO  verPartiGrupo(Long id_grupo){
+    public GrupoDTO verPartiGrupo(Long id_grupo){
 
         Optional<Grupo> grupo = grupoRepositorio.findById(id_grupo);
         ArrayList<UsuarioDTO> usuariosdto = new ArrayList<>();
@@ -65,20 +65,20 @@ public class GrupoServicio implements IGrupoServicio {
             usedto.setNombre(u.getNombre());
             usuariosdto.add(usedto);
         }
-        PartiDTO partiDTO = new PartiDTO();
-        partiDTO.setId_grupo(grupo.get().getId_grupo());
-        partiDTO.setNombre(grupo.get().getNombre());
-        partiDTO.setDescripcion(grupo.get().getDescripcion());
-        partiDTO.setIntegrantes(grupo.get().getIntegrantes());
-        partiDTO.setUbicacion(grupo.get().getUbicacion());
-        partiDTO.setFechaCreacion(grupo.get().getFechaCreacion());
-        partiDTO.setUsuarios(usuariosdto);
+        GrupoDTO grupoDTO = new GrupoDTO();
+        grupoDTO.setId_grupo(grupo.get().getId_grupo());
+        grupoDTO.setNombre(grupo.get().getNombre());
+        grupoDTO.setDescripcion(grupo.get().getDescripcion());
+        grupoDTO.setIntegrantes(grupo.get().getIntegrantes());
+        grupoDTO.setUbicacion(grupo.get().getUbicacion());
+        grupoDTO.setFechaCreacion(grupo.get().getFechaCreacion());
+        grupoDTO.setUsuarios(usuariosdto);
 
 
 
-        return partiDTO;
+        return grupoDTO;
     }
-    public PartiDTO eliminarPartiGrup(Long id_usuario, Long id_grupo){
+    public GrupoDTO eliminarPartiGrup(Long id_usuario, Long id_grupo){
         ArrayList<UsuarioDTO> usuariosdto = new ArrayList<>();
         Grupo grupo = grupoRepositorio.findById(id_grupo).orElseThrow(() -> new RuntimeException("No existe el grupo"));
         Usuario usuario = usuarioRepositorio.findById(id_usuario).orElseThrow(()-> new RuntimeException("No existe el grupo"));
@@ -91,16 +91,16 @@ public class GrupoServicio implements IGrupoServicio {
             usedto.setNombre(u.getNombre());
             usuariosdto.add(usedto);
         }
-        PartiDTO partiDTO = new PartiDTO();
-        partiDTO.setId_grupo(grupo.getId_grupo());
-        partiDTO.setNombre(grupo.getNombre());
-        partiDTO.setDescripcion(grupo.getDescripcion());
-        partiDTO.setIntegrantes(grupo.getIntegrantes());
-        partiDTO.setUbicacion(grupo.getUbicacion());
-        partiDTO.setFechaCreacion(grupo.getFechaCreacion());
-        partiDTO.setUsuarios(usuariosdto);
+        GrupoDTO grupoDTO = new GrupoDTO();
+        grupoDTO.setId_grupo(grupo.getId_grupo());
+        grupoDTO.setNombre(grupo.getNombre());
+        grupoDTO.setDescripcion(grupo.getDescripcion());
+        grupoDTO.setIntegrantes(grupo.getIntegrantes());
+        grupoDTO.setUbicacion(grupo.getUbicacion());
+        grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
+        grupoDTO.setUsuarios(usuariosdto);
 
-        return partiDTO;
+        return grupoDTO;
     }
     public Optional<Grupo> obtenerGruposPorUsuario(Long id_usuario){
         Optional<Usuario> usuario = usuarioRepositorio.findById(id_usuario);

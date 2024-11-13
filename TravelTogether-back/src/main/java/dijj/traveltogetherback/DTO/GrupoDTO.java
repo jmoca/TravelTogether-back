@@ -1,19 +1,17 @@
 package dijj.traveltogetherback.DTO;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PartiDTO {
+public class GrupoDTO {
     private Long id_grupo;
     private String nombre;
 
