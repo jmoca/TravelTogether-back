@@ -103,7 +103,19 @@ public class GrupoServicio implements IGrupoServicio {
 
         return grupoDTO;
     }
-    public List<Grupo> obtenerGruposPorUsuario(Long id_usuario){
-        return grupoRepositorio.findGruposByUsuarioId(id_usuario);
+    public List<GrupoDTO> obtenerGruposPorUsuario(Long id_usuario){
+        List<Grupo> grupos = grupoRepositorio.findGruposByUsuarioId(id_usuario);
+        List<GrupoDTO> grupoDTOs = new ArrayList<>();
+        for (Grupo grupo : grupos) {
+            GrupoDTO grupoDTO = new GrupoDTO();
+            grupoDTO.setId_grupo(grupo.getId_grupo());
+            grupoDTO.setNombre(grupo.getNombre());
+            grupoDTO.setDescripcion(grupo.getDescripcion());
+            grupoDTO.setIntegrantes(grupo.getIntegrantes());
+            grupoDTO.setUbicacion(grupo.getUbicacion());
+            grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
+            grupoDTOs.add(grupoDTO);
+        }
+        return grupoDTOs;
     }
 }

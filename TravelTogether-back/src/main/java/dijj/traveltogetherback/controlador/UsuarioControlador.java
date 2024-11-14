@@ -1,8 +1,7 @@
 package dijj.traveltogetherback.controlador;
 
+import dijj.traveltogetherback.DTO.GrupoDTO;
 import dijj.traveltogetherback.DTO.UsuarioDTO;
-import dijj.traveltogetherback.modelo.Grupo;
-import dijj.traveltogetherback.modelo.Usuario;
 import dijj.traveltogetherback.servicio.GrupoServicio;
 import dijj.traveltogetherback.servicio.UsuarioServicio;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -30,8 +28,8 @@ public class UsuarioControlador {
     }
 
     @GetMapping("/viajes")
-    public ResponseEntity<List<Grupo>> listarGrupos(@RequestParam Long id_usuario) {
-        List<Grupo> grupos = grupoServicio.obtenerGruposPorUsuario(id_usuario);
+    public ResponseEntity<List<GrupoDTO>> listarGrupos(@RequestParam Long id_usuario) {
+        List<GrupoDTO> grupos = grupoServicio.obtenerGruposPorUsuario(id_usuario);
         return ResponseEntity.ok(grupos);
 
     }

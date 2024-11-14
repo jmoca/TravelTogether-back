@@ -14,5 +14,5 @@ public interface IGrupoServicio {
 
     public GrupoDTO eliminarPartiGrup(Long id_usuario, Long id_grupo);
 
-    public List<Grupo> obtenerGruposPorUsuario(Long id_usuario);
+    public List<GrupoDTO> obtenerGruposPorUsuario(Long id_usuario);
 }
