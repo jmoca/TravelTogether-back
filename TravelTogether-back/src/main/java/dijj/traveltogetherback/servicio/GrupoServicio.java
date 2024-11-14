@@ -1,6 +1,7 @@
 package dijj.traveltogetherback.servicio;
 
 import dijj.traveltogetherback.DTO.GrupoDTO;
+import dijj.traveltogetherback.DTO.ParticipanteDTO;
 import dijj.traveltogetherback.DTO.UsuarioDTO;
 import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.modelo.Usuario;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -56,28 +56,26 @@ public class GrupoServicio implements IGrupoServicio {
 
         return grupoDTO;
     }
-    public GrupoDTO verPartiGrupo(Long id_grupo){
+    public ParticipanteDTO verPartiGrupo(Long id_grupo){
 
-        Optional<Grupo> grupo = grupoRepositorio.findById(id_grupo);
+        Grupo grupo = grupoRepositorio.findById(id_grupo).orElseThrow(() -> new RuntimeException("No existe el grupo"));
         ArrayList<UsuarioDTO> usuariosdto = new ArrayList<>();
-        for (Usuario u: grupo.get().getUsuarios()){
+        for (Usuario u: grupo.getUsuarios()){
             UsuarioDTO usedto = new UsuarioDTO();
             usedto.setId(u.getId_usuario());
             usedto.setNombre(u.getNombre());
             usuariosdto.add(usedto);
         }
-        GrupoDTO grupoDTO = new GrupoDTO();
-        grupoDTO.setId_grupo(grupo.get().getId_grupo());
-        grupoDTO.setNombre(grupo.get().getNombre());
-        grupoDTO.setDescripcion(grupo.get().getDescripcion());
-        grupoDTO.setIntegrantes(grupo.get().getIntegrantes());
-        grupoDTO.setUbicacion(grupo.get().getUbicacion());
-        grupoDTO.setFechaCreacion(grupo.get().getFechaCreacion());
+        ParticipanteDTO participanteDTO = new ParticipanteDTO();
+        participanteDTO.setId_grupo(grupo.getId_grupo());
+        participanteDTO.setNombre(grupo.getNombre());
+        participanteDTO.setDescripcion(grupo.getDescripcion());
+        participanteDTO.setIntegrantes(grupo.getIntegrantes());
+        participanteDTO.setUbicacion(grupo.getUbicacion());
+        participanteDTO.setFechaCreacion(grupo.getFechaCreacion());
+        participanteDTO.setUsuarios(usuariosdto);
 
-
-
-
-        return grupoDTO;
+        return participanteDTO;
     }
     public GrupoDTO eliminarPartiGrup(Long id_usuario, Long id_grupo){
         ArrayList<UsuarioDTO> usuariosdto = new ArrayList<>();

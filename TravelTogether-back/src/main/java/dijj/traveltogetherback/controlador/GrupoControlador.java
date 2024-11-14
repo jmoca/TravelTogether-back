@@ -2,6 +2,7 @@ package dijj.traveltogetherback.controlador;
 
 
 import dijj.traveltogetherback.DTO.GrupoDTO;
+import dijj.traveltogetherback.DTO.ParticipanteDTO;
 import dijj.traveltogetherback.DTO.eliminarDTO;
 import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.servicio.GrupoServicio;
@@ -32,8 +33,8 @@ public class GrupoControlador {
 
     }
     @GetMapping("/participantes")
-    public ResponseEntity<GrupoDTO> verParticipante(@RequestParam Long id_grupo){
-        GrupoDTO nuevogrupo = grupoServicio.verPartiGrupo(id_grupo);
+    public ResponseEntity<ParticipanteDTO> verParticipante(@RequestParam Long id_grupo){
+        ParticipanteDTO nuevogrupo = grupoServicio.verPartiGrupo(id_grupo);
         return ResponseEntity.ok(nuevogrupo);
 
     }
