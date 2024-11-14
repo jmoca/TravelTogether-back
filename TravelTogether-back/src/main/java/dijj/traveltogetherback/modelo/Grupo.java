@@ -36,6 +36,9 @@ public class Grupo {
     @Column(name = "fecha_creacion")
     private String fechaCreacion;
 
+    @Column(name = "multimedia")
+    private String multimedia;
+
 
 
     @ManyToMany

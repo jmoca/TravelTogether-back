@@ -30,12 +30,9 @@ public class UsuarioControlador {
     }
 
     @GetMapping("/viajes")
-    public ResponseEntity<Optional<Grupo>> listarGrupos(@RequestParam Long id_usuario) {
-        Optional<Grupo> grupos = grupoServicio.obtenerGruposPorUsuario(id_usuario);
-        if (!grupos.isEmpty()) {
-            return ResponseEntity.ok(grupos);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<List<Grupo>> listarGrupos(@RequestParam Long id_usuario) {
+        List<Grupo> grupos = grupoServicio.obtenerGruposPorUsuario(id_usuario);
+        return ResponseEntity.ok(grupos);
+
     }
 }

@@ -21,6 +21,6 @@ public class GrupoDTO {
 
     private String fechaCreacion;
 
-    private ArrayList<UsuarioDTO> usuarios;
+
 
 }

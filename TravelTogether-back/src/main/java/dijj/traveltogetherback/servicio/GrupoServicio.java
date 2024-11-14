@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,7 +52,7 @@ public class GrupoServicio implements IGrupoServicio {
         grupoDTO.setIntegrantes(grupo.getIntegrantes());
         grupoDTO.setUbicacion(grupo.getUbicacion());
         grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
-        grupoDTO.setUsuarios(usuariosdto);
+
 
         return grupoDTO;
     }
@@ -72,7 +73,7 @@ public class GrupoServicio implements IGrupoServicio {
         grupoDTO.setIntegrantes(grupo.get().getIntegrantes());
         grupoDTO.setUbicacion(grupo.get().getUbicacion());
         grupoDTO.setFechaCreacion(grupo.get().getFechaCreacion());
-        grupoDTO.setUsuarios(usuariosdto);
+
 
 
 
@@ -98,16 +99,11 @@ public class GrupoServicio implements IGrupoServicio {
         grupoDTO.setIntegrantes(grupo.getIntegrantes());
         grupoDTO.setUbicacion(grupo.getUbicacion());
         grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
-        grupoDTO.setUsuarios(usuariosdto);
+
 
         return grupoDTO;
     }
-    public Optional<Grupo> obtenerGruposPorUsuario(Long id_usuario){
-        Optional<Usuario> usuario = usuarioRepositorio.findById(id_usuario);
-        if (usuario.isPresent()) {
-            return grupoRepositorio.findById(usuario.get().getId_usuario());
-        } else {
-            throw new RuntimeException("Usuario no encontrado con id: " + id_usuario);
-        }
+    public List<Grupo> obtenerGruposPorUsuario(Long id_usuario){
+        return grupoRepositorio.findGruposByUsuarioId(id_usuario);
     }
 }

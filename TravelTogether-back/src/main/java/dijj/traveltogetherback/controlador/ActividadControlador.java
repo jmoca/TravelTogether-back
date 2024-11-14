@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/viaje/actividad")
+@RequestMapping("/viaje/actividades")
 public class ActividadControlador {
 
     private final ActividadServicio actividadServicio;
@@ -33,11 +33,12 @@ public class ActividadControlador {
         return ResponseEntity.ok(resultadoVoto);
     }
 
-    // Ver todas las actividades
     @GetMapping
     public ResponseEntity<List<ActividadDTO>> verActividades(@RequestParam Long id_grupo) {
         List<ActividadDTO> actividades = actividadServicio.obtenerActividades(id_grupo);
         return ResponseEntity.ok(actividades);
     }
+    // Ver todas las actividades
+
 }
 
