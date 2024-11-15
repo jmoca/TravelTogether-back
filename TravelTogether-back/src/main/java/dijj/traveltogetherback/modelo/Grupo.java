@@ -30,8 +30,6 @@ public class Grupo {
     @Column(name = "integrantes")
     private int integrantes;
 
-    @Column(name = "ubicacion")
-    private String ubicacion;
 
     @Column(name = "fecha_creacion")
     private String fechaCreacion;

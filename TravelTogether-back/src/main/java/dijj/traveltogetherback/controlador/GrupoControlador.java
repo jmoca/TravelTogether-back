@@ -38,7 +38,7 @@ public class GrupoControlador {
         return ResponseEntity.ok(nuevogrupo);
 
     }
-    @PostMapping("/participante/eliminar")
+    @DeleteMapping ("/participante/eliminar")
     public ResponseEntity<GrupoDTO> eliminarParticipante(@RequestBody eliminarDTO eliminar){
         GrupoDTO nuevogrupo = grupoServicio.eliminarPartiGrup(eliminar.getId_usuario(), eliminar.getId_grupo());
         return ResponseEntity.ok(nuevogrupo);

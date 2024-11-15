@@ -17,7 +17,7 @@ public class GrupoDTO {
 
     private String descripcion;
     private int integrantes;
-    private String ubicacion;
+
 
     private String fechaCreacion;
 

@@ -50,7 +50,7 @@ public class GrupoServicio implements IGrupoServicio {
         grupoDTO.setNombre(grupo.getNombre());
         grupoDTO.setDescripcion(grupo.getDescripcion());
         grupoDTO.setIntegrantes(grupo.getIntegrantes());
-        grupoDTO.setUbicacion(grupo.getUbicacion());
+
         grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
 
 
@@ -71,7 +71,7 @@ public class GrupoServicio implements IGrupoServicio {
         participanteDTO.setNombre(grupo.getNombre());
         participanteDTO.setDescripcion(grupo.getDescripcion());
         participanteDTO.setIntegrantes(grupo.getIntegrantes());
-        participanteDTO.setUbicacion(grupo.getUbicacion());
+
         participanteDTO.setFechaCreacion(grupo.getFechaCreacion());
         participanteDTO.setUsuarios(usuariosdto);
 
@@ -95,7 +95,7 @@ public class GrupoServicio implements IGrupoServicio {
         grupoDTO.setNombre(grupo.getNombre());
         grupoDTO.setDescripcion(grupo.getDescripcion());
         grupoDTO.setIntegrantes(grupo.getIntegrantes());
-        grupoDTO.setUbicacion(grupo.getUbicacion());
+
         grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
 
 
@@ -110,7 +110,7 @@ public class GrupoServicio implements IGrupoServicio {
             grupoDTO.setNombre(grupo.getNombre());
             grupoDTO.setDescripcion(grupo.getDescripcion());
             grupoDTO.setIntegrantes(grupo.getIntegrantes());
-            grupoDTO.setUbicacion(grupo.getUbicacion());
+
             grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
             grupoDTOs.add(grupoDTO);
         }
