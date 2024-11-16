@@ -20,6 +20,6 @@ public class ActividadDTO {
     private String estado;
 
 
-    public ActividadDTO(Long idActividad, String nombre, String descripcion, String fecha, Long idUsuario) {
-    }
+
+
 }
