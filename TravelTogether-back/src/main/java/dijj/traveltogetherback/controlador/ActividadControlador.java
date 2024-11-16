@@ -38,7 +38,7 @@ public class ActividadControlador {
         List<ActividadDTO> actividades = actividadServicio.obtenerActividades(id_grupo);
         return ResponseEntity.ok(actividades);
     }
-    // Ver todas las actividades
+
 
 }
 

@@ -68,7 +68,7 @@ public class ActividadServicio {
     public List<ActividadDTO> obtenerActividades(Long id_grupo) {
         List<Actividad> actividades = actividadRepositorio.findAll();
         return actividades.stream()
-                .filter(actividad -> actividad.getGrupo().getId_grupo().equals(id_grupo))
+                .filter(actividad -> actividad.getGrupo() != null && actividad.getGrupo().getId_grupo().equals(id_grupo))
                 .map(actividad -> new ActividadDTO(
                         actividad.getId_actividad(),
                         actividad.getNombre(),
@@ -80,5 +80,6 @@ public class ActividadServicio {
                 ))
                 .collect(Collectors.toList());
     }
+
 
 }
