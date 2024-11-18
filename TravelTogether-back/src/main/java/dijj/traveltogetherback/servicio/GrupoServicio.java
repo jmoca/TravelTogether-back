@@ -8,6 +8,7 @@ import dijj.traveltogetherback.modelo.Usuario;
 import dijj.traveltogetherback.repositorio.IGrupoRepositorio;
 import dijj.traveltogetherback.repositorio.IUsuarioRepositorio;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 
+@Service
 public class GrupoServicio implements IGrupoServicio {
     @Autowired
     private IGrupoRepositorio grupoRepositorio;

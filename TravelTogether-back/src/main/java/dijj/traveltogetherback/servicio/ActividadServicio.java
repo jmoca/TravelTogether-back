@@ -3,10 +3,12 @@ package dijj.traveltogetherback.servicio;
 import dijj.traveltogetherback.DTO.ActividadDTO;
 import dijj.traveltogetherback.DTO.VotoDTO;
 import dijj.traveltogetherback.modelo.Actividad;
+import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.modelo.Usuario;
 import dijj.traveltogetherback.modelo.Voto;
 
 import dijj.traveltogetherback.repositorio.IActividadRepositorio;
+import dijj.traveltogetherback.repositorio.IGrupoRepositorio;
 import dijj.traveltogetherback.repositorio.IUsuarioRepositorio;
 import dijj.traveltogetherback.repositorio.IVotoRepositorio;
 
@@ -23,18 +25,23 @@ public class ActividadServicio {
     private final IActividadRepositorio actividadRepositorio;
     private final IUsuarioRepositorio usuarioRepositorio;
     private final IVotoRepositorio votoRepositorio;
+    private final IGrupoRepositorio grupoRepositorio;
 
-    public ActividadServicio(IActividadRepositorio actividadRepositorio, IUsuarioRepositorio usuarioRepositorio, IVotoRepositorio votoRepositorio) {
+    public ActividadServicio(IActividadRepositorio actividadRepositorio, IUsuarioRepositorio usuarioRepositorio, IVotoRepositorio votoRepositorio, IGrupoRepositorio grupoRepositorio) {
         this.actividadRepositorio = actividadRepositorio;
         this.usuarioRepositorio = usuarioRepositorio;
         this.votoRepositorio = votoRepositorio;
+        this.grupoRepositorio = grupoRepositorio;
     }
 
     // Método para crear una nueva actividad
-    public ActividadDTO crearActividad(Long idUsuario, Actividad actividad) {
+    public ActividadDTO crearActividad(Long idUsuario, Long id_grupo, Actividad actividad) {
         Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(idUsuario);
-        if (usuarioOptional.isPresent()) {
+        Optional<Grupo> grupoOptional = grupoRepositorio.findById(id_grupo);
+
+        if (usuarioOptional.isPresent() && grupoOptional.isPresent()) {
             actividad.setUsuarios(usuarioOptional.get());
+            actividad.setGrupo(grupoOptional.get());
             actividadRepositorio.save(actividad);
             return new ActividadDTO(
                     actividad.getId_actividad(),
@@ -46,11 +53,11 @@ public class ActividadServicio {
                     null
             );
         } else {
-            throw new IllegalArgumentException("Usuario no encontrado con id: " + idUsuario);
+            throw new IllegalArgumentException("Usuario o Grupo no encontrado con los IDs proporcionados");
         }
     }
 
-    // Método para votar por una actividad
+    
     public VotoDTO votarActividad(Long idUsuario, Long idActividad, boolean tipoVoto) {
         // Buscar el usuario y la actividad
         Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(idUsuario);

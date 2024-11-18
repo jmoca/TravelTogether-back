@@ -21,8 +21,8 @@ public class ActividadControlador {
 
     // Crear una nueva actividad
     @PostMapping("/nueva")
-    public ResponseEntity<ActividadDTO> proponerActividad(@RequestParam Long id_usuario, @RequestBody Actividad actividad) {
-        ActividadDTO nuevaActividad = actividadServicio.crearActividad(id_usuario, actividad);
+    public ResponseEntity<ActividadDTO> proponerActividad(@RequestParam Long id_usuario, @RequestParam Long id_grupo , @RequestBody Actividad actividad) {
+        ActividadDTO nuevaActividad = actividadServicio.crearActividad(id_usuario, id_grupo ,actividad);
         return ResponseEntity.ok(nuevaActividad);
     }
 
