@@ -147,3 +147,9 @@ INSERT INTO usuarios_grupos (grupo, usuario) VALUES
                                                  (2, 3),
                                                  (3, 4),
                                                  (4, 5);
+--Contar votos
+
+SELECT id_actividad,
+       SUM(CASE WHEN tipo_voto = true THEN 1 ELSE -1 END) AS balance_votos
+FROM votos
+GROUP BY id_actividad;
