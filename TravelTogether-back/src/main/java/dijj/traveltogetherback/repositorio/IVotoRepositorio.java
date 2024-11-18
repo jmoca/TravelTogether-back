@@ -16,4 +16,7 @@ public interface IVotoRepositorio extends JpaRepository<Voto, Long> {
             "FROM Voto v " +
             "GROUP BY v.actividad.id_actividad")
     List<Object[]> totalvotos();
+
+    @Query("SELECT v FROM Voto v WHERE v.usuario.id_usuario = :id_usuario AND v.actividad.id_actividad = :id_actividad")
+    Voto findvotoId(Long id_usuario, Long id_actividad);
 }

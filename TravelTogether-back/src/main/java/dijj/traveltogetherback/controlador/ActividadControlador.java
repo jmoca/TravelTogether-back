@@ -34,7 +34,7 @@ public class ActividadControlador {
     // Votar por una actividad
     @PostMapping("/votar")
     public ResponseEntity<VotoDTO> votarActividad(@RequestParam Long id_usuario, @RequestParam Long id_actividad, @RequestParam boolean tipo_voto) {
-        VotoDTO resultadoVoto = actividadServicio.votarActividad(id_usuario, id_actividad, tipo_voto);
+        VotoDTO resultadoVoto = votoServicio.actualizarVoto(id_usuario, id_actividad, tipo_voto);
         return ResponseEntity.ok(resultadoVoto);
     }
 

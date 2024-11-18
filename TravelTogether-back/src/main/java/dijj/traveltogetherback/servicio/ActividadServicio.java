@@ -58,45 +58,7 @@ public class ActividadServicio {
     }
 
     
-    public VotoDTO votarActividad(Long idUsuario, Long idActividad, boolean tipoVoto) {
-        // Buscar el usuario y la actividad
-        Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(idUsuario);
-        Optional<Actividad> actividadOptional = actividadRepositorio.findById(idActividad);
 
-        if (usuarioOptional.isPresent() && actividadOptional.isPresent()) {
-            // Buscar si el usuario ya ha votado por esta actividad
-            Optional<Voto> votoExistente = votoRepositorio.findById(idActividad);
-
-            Voto voto;
-            if (votoExistente.isPresent()) {
-                // Si el voto ya existe, actualizarlo
-                voto = votoExistente.get();
-                voto.setTipo_voto(tipoVoto);  // Cambiar el tipo de voto
-                voto.setFechaVoto(LocalDateTime.now());  // Actualizar la fecha de voto si lo deseas
-            } else {
-                // Si no existe, crear un nuevo voto
-                voto = new Voto();
-                voto.setUsuario(usuarioOptional.get());
-                voto.setActividad(actividadOptional.get());
-                voto.setTipo_voto(tipoVoto);
-                voto.setFechaVoto(LocalDateTime.now());  // Establecer la fecha de voto
-            }
-
-            // Guardar el voto (ya sea actualizado o nuevo)
-            Voto votoGuardado = votoRepositorio.save(voto);
-
-            // Retornar el DTO con los datos del voto guardado
-            return new VotoDTO(
-                    votoGuardado.getId_voto(),
-                    votoGuardado.isTipo_voto(),
-                    votoGuardado.getActividad().getId_actividad(),
-                    votoGuardado.getUsuario().getId_usuario(),
-                    votoGuardado.getFechaVoto()
-            );
-        } else {
-            throw new IllegalArgumentException("Usuario o Actividad no encontrada con los IDs proporcionados");
-        }
-    }
 
 
 
@@ -115,6 +77,7 @@ public class ActividadServicio {
                 ))
                 .collect(Collectors.toList());
     }
+
 
 
 }

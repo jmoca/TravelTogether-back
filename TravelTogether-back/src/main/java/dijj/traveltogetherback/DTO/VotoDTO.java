@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class VotoDTO {
     private Long idVoto;
-    private boolean tipoVoto;
+    private boolean tipo_voto;
     private Long idActividad;
     private Long idUsuario;
     private LocalDateTime fechaVoto;

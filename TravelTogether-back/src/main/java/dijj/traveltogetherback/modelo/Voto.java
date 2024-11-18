@@ -30,5 +30,13 @@ public class Voto {
 
     @Column(name = "fecha_voto")
     private LocalDateTime fechaVoto = LocalDateTime.now();
+    public boolean getTipo_voto() {
+        return tipo_voto;
+    }
+
+    public void setTipo_voto(boolean tipo_voto) {
+        this.tipo_voto = tipo_voto;
+    }
+
 
 }
