@@ -82,6 +82,89 @@ CREATE TABLE usuarios_grupos (
 
 
 -- Tabla usuario
+CREATE TABLE usuario (
+                         id_usuario SERIAL PRIMARY KEY,
+                         nombre VARCHAR(100) NOT NULL
+);
+
+-- Tabla registro
+CREATE TABLE registro (
+                          id_registro SERIAL PRIMARY KEY,
+                          contrasena VARCHAR(100) NOT NULL,
+                          email VARCHAR(100) UNIQUE NOT NULL,
+                          fecha_registro DATE NOT NULL,
+                          id_usuario INT REFERENCES usuario(id_usuario) ON DELETE CASCADE
+);
+
+-- Tabla grupos
+CREATE TABLE grupos (
+                        id_grupo SERIAL PRIMARY KEY,
+                        descripcion TEXT,
+                        fecha_creacion DATE NOT NULL,
+                        integrantes INT NOT NULL,
+                        nombre_grupo VARCHAR(100) NOT NULL,
+                        ubicacion VARCHAR(100)
+);
+
+-- Tabla amigos
+CREATE TABLE amigos (
+                        id SERIAL PRIMARY KEY,
+                        fecha_amistad DATE NOT NULL,
+                        id_usuario1 INT REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+                        id_usuario2 INT REFERENCES usuario(id_usuario) ON DELETE CASCADE
+);
+
+-- Tabla actividades
+CREATE TABLE actividades (
+                             id_actividad SERIAL PRIMARY KEY,
+                             descripcion TEXT,
+                             fecha_actividad DATE NOT NULL,
+                             lugar VARCHAR(100),
+                             multimedia VARCHAR(100),
+                             nombre_actividad VARCHAR(100) NOT NULL,
+                             id_grupo INT REFERENCES grupos(id_grupo) ON DELETE CASCADE,
+                             id_usuario INT REFERENCES usuario(id_usuario) ON DELETE SET NULL
+);
+
+-- Tabla votos
+CREATE TABLE votos (
+                       id_voto SERIAL PRIMARY KEY,
+                       fecha_voto DATE NOT NULL,
+                       tipo_voto BOOLEAN NOT NULL,
+                       id_actividad INT REFERENCES actividades(id_actividad) ON DELETE CASCADE,
+                       id_usuario INT REFERENCES usuario(id_usuario) ON DELETE CASCADE
+);
+
+-- Tabla itinerario
+CREATE TABLE itinerario (
+                            id_itinerario SERIAL PRIMARY KEY,
+                            descripcion_detallada TEXT,
+                            fecha_itinerario DATE NOT NULL,
+                            hora_inicio TIME NOT NULL,
+                            hora_fin TIME NOT NULL,
+                            ubicacion VARCHAR(100),
+                            id_actividad INT REFERENCES actividades(id_actividad) ON DELETE CASCADE
+);
+
+-- Tabla chat
+CREATE TABLE chat (
+                      id_chat SERIAL PRIMARY KEY,
+                      fecha_envio DATE NOT NULL,
+                      mensaje TEXT NOT NULL,
+                      id_grupo INT REFERENCES grupos(id_grupo) ON DELETE CASCADE
+);
+
+-- Tabla usuarios_grupos (relación muchos a muchos entre usuario y grupos)
+CREATE TABLE usuarios_grupos (
+                                 grupo INT REFERENCES grupos(id_grupo) ON DELETE CASCADE,
+                                 usuario INT REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+                                 PRIMARY KEY (grupo, usuario)
+);
+
+
+
+
+-- Tabla usuario
 INSERT INTO usuario (id_usuario, nombre) VALUES
                                              (1, 'Juan Pérez'),
                                              (2, 'Ana Gómez'),
@@ -98,12 +181,12 @@ INSERT INTO registro (id_registro, contrasena, email, fecha_registro, id_usuario
                                                                                       (5, 'pass102', 'luis.martinez@example.com', '2023-01-05', 5);
 
 -- Tabla grupos
-INSERT INTO grupos (id_grupo, descripcion, fecha_creacion, integrantes, nombre_grupo, ubicacion) VALUES
-                                                                                                     (1, 'Grupo de deportes', '2023-01-10', 10, 'Deportistas', 'Parque Central'),
-                                                                                                     (2, 'Grupo de estudio', '2023-01-12', 5, 'Estudiantes', 'Biblioteca'),
-                                                                                                     (3, 'Grupo de música', '2023-01-15', 8, 'Músicos', 'Centro Cultural'),
-                                                                                                     (4, 'Grupo de arte', '2023-01-18', 6, 'Artistas', 'Museo de Arte'),
-                                                                                                     (5, 'Grupo de tecnología', '2023-01-20', 12, 'Techies', 'Centro Tecnológico');
+INSERT INTO grupos (id_grupo, descripcion, fecha_creacion, integrantes, nombre_grupo, id_usuario_creador) VALUES
+                                                                                                              (1, 'Grupo de deportes', '2023-01-10', 10, 'Deportistas', '1'),
+                                                                                                              (2, 'Grupo de estudio', '2023-01-12', 5, 'Estudiantes', '1'),
+                                                                                                              (3, 'Grupo de música', '2023-01-15', 8, 'Músicos', '1'),
+                                                                                                              (4, 'Grupo de arte', '2023-01-18', 6, 'Artistas', '1'),
+                                                                                                              (5, 'Grupo de tecnología', '2023-01-20', 12, 'Techies', '1');
 
 -- Tabla amigos
 INSERT INTO amigos (id, fecha_amistad, id_usuario1, id_usuario2) VALUES
@@ -147,6 +230,21 @@ INSERT INTO usuarios_grupos (grupo, usuario) VALUES
                                                  (2, 3),
                                                  (3, 4),
                                                  (4, 5);
+
+
+SELECT COUNT(*) AS total_actividades
+FROM actividades
+WHERE id_grupo = 3;
+
+SELECT id_actividad = 1,
+       SUM(CASE WHEN tipo_voto = true THEN 1 ELSE 0 END) AS votos_positivos,
+       SUM(CASE WHEN tipo_voto = false THEN 1 ELSE 0 END) AS votos_negativos
+FROM votos
+GROUP BY id_actividad;
+
+
+
+
 --Contar votos
 
 SELECT id_actividad,

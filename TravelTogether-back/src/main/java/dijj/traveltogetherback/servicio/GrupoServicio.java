@@ -2,6 +2,7 @@ package dijj.traveltogetherback.servicio;
 
 import dijj.traveltogetherback.DTO.GrupoDTO;
 import dijj.traveltogetherback.DTO.ParticipanteDTO;
+import dijj.traveltogetherback.DTO.UsuarioCreadorDTO;
 import dijj.traveltogetherback.DTO.UsuarioDTO;
 import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.modelo.Usuario;
@@ -11,10 +12,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @AllArgsConstructor
@@ -28,9 +32,44 @@ public class GrupoServicio implements IGrupoServicio {
     private IUsuarioRepositorio usuarioRepositorio;
 
 
-    public Grupo crearGrupo(Grupo grupo){
-        return grupoRepositorio.save(grupo);
+    public GrupoDTO crearGrupo(GrupoDTO grupoDTO) {
+        // Buscar el usuario creador por su ID
+        Optional<Usuario> usuario = usuarioRepositorio.findById(grupoDTO.getIdUsuarioCreador());
+        if (usuario.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario con ID " + grupoDTO.getIdUsuarioCreador() + " no existe");
+        }
+
+        // Crear el grupo y asignar sus atributos
+        Grupo nuevoGrupo = new Grupo();
+        nuevoGrupo.setNombre(grupoDTO.getNombre());
+        nuevoGrupo.setDescripcion(grupoDTO.getDescripcion());
+        nuevoGrupo.setIntegrantes(grupoDTO.getIntegrantes());
+        nuevoGrupo.setFechaCreacion(grupoDTO.getFechaCreacion());
+        nuevoGrupo.setMultimedia(grupoDTO.getMultimedia());
+        nuevoGrupo.setUsuarioCreador(usuario.get());
+
+        // Guardar el grupo
+        Grupo grupoGuardado = grupoRepositorio.save(nuevoGrupo);
+
+        // Crear el DTO con el id y nombre del usuario creador
+        UsuarioCreadorDTO usuarioCreadorDTO = new UsuarioCreadorDTO(
+                grupoGuardado.getUsuarioCreador().getId_usuario(),
+                grupoGuardado.getUsuarioCreador().getNombre()
+        );
+
+        // Crear el DTO para el grupo que contiene solo los campos necesarios
+        GrupoDTO grupoDTOResponse = new GrupoDTO();
+        grupoDTOResponse.setId_grupo(grupoGuardado.getId_grupo());
+        grupoDTOResponse.setNombre(grupoGuardado.getNombre());
+        grupoDTOResponse.setDescripcion(grupoGuardado.getDescripcion());
+        grupoDTOResponse.setIdUsuarioCreador(grupoGuardado.getUsuarioCreador().getId_usuario());
+
+        return grupoDTOResponse;
     }
+
+
+
+
     public GrupoDTO nuevoPartiGrup(Long idUsuario, Long id_grupo){
 
         ArrayList<UsuarioDTO> usuariosdto = new ArrayList<>();

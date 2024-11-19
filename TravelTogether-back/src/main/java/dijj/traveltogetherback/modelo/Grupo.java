@@ -46,5 +46,8 @@ public class Grupo {
             joinColumns = @JoinColumn(name = "grupo"),
             inverseJoinColumns = @JoinColumn(name = "usuario")
     )
-    private Set<Usuario> usuarios;
+    private List<Usuario> usuarios;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario_creador")
+    private Usuario usuarioCreador;
 }

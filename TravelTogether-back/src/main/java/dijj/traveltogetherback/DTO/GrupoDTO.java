@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,8 +19,11 @@ public class GrupoDTO {
     private String descripcion;
     private int integrantes;
 
-
     private String fechaCreacion;
+
+    private Long idUsuarioCreador;
+
+    private String multimedia;
 
 
 
