@@ -32,39 +32,11 @@ public class GrupoServicio implements IGrupoServicio {
     private IUsuarioRepositorio usuarioRepositorio;
 
 
-    public GrupoDTO crearGrupo(GrupoDTO grupoDTO) {
+    public Grupo crearGrupo(Grupo grupo, Long idUsuarioCreador) {
         // Buscar el usuario creador por su ID
-        Optional<Usuario> usuario = usuarioRepositorio.findById(grupoDTO.getIdUsuarioCreador());
-        if (usuario.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario con ID " + grupoDTO.getIdUsuarioCreador() + " no existe");
-        }
-
-        // Crear el grupo y asignar sus atributos
-        Grupo nuevoGrupo = new Grupo();
-        nuevoGrupo.setNombre(grupoDTO.getNombre());
-        nuevoGrupo.setDescripcion(grupoDTO.getDescripcion());
-        nuevoGrupo.setIntegrantes(grupoDTO.getIntegrantes());
-        nuevoGrupo.setFechaCreacion(grupoDTO.getFechaCreacion());
-        nuevoGrupo.setMultimedia(grupoDTO.getMultimedia());
-        nuevoGrupo.setUsuarioCreador(usuario.get());
-
-        // Guardar el grupo
-        Grupo grupoGuardado = grupoRepositorio.save(nuevoGrupo);
-
-        // Crear el DTO con el id y nombre del usuario creador
-        UsuarioCreadorDTO usuarioCreadorDTO = new UsuarioCreadorDTO(
-                grupoGuardado.getUsuarioCreador().getId_usuario(),
-                grupoGuardado.getUsuarioCreador().getNombre()
-        );
-
-        // Crear el DTO para el grupo que contiene solo los campos necesarios
-        GrupoDTO grupoDTOResponse = new GrupoDTO();
-        grupoDTOResponse.setId_grupo(grupoGuardado.getId_grupo());
-        grupoDTOResponse.setNombre(grupoGuardado.getNombre());
-        grupoDTOResponse.setDescripcion(grupoGuardado.getDescripcion());
-        grupoDTOResponse.setIdUsuarioCreador(grupoGuardado.getUsuarioCreador().getId_usuario());
-
-        return grupoDTOResponse;
+        Optional<Usuario> usuarios = usuarioRepositorio.findById(idUsuarioCreador);
+        grupo.getUsuarios().add(usuarios.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")));
+        return  grupoRepositorio.save(grupo);
     }
 
 

@@ -7,7 +7,7 @@ import dijj.traveltogetherback.modelo.Grupo;
 import java.util.List;
 
 public interface IGrupoServicio {
-    public GrupoDTO crearGrupo(GrupoDTO grupo);
+    public Grupo crearGrupo(Grupo grupo, Long id_usuario);
 
     public GrupoDTO nuevoPartiGrup(Long id_usuario, Long id_grupo);
 

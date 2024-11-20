@@ -3,6 +3,7 @@ package dijj.traveltogetherback.modelo;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -46,8 +47,6 @@ public class Grupo {
             joinColumns = @JoinColumn(name = "grupo"),
             inverseJoinColumns = @JoinColumn(name = "usuario")
     )
-    private List<Usuario> usuarios;
-    @ManyToOne
-    @JoinColumn(name = "id_usuario_creador")
-    private Usuario usuarioCreador;
+    private List<Usuario> usuarios = new ArrayList<>();
+
 }

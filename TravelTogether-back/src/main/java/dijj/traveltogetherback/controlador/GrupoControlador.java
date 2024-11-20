@@ -4,6 +4,7 @@ package dijj.traveltogetherback.controlador;
 import dijj.traveltogetherback.DTO.GrupoDTO;
 import dijj.traveltogetherback.DTO.ParticipanteDTO;
 import dijj.traveltogetherback.DTO.eliminarDTO;
+import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.servicio.GrupoServicio;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class GrupoControlador {
     }
 // RequestBody para devovler json
     @PostMapping("/nuevo")
-    public ResponseEntity<GrupoDTO> nuevoViaje(@RequestBody GrupoDTO grupo){
-        GrupoDTO nuevogrupo = grupoServicio.crearGrupo(grupo);
+    public ResponseEntity<Grupo> nuevoViaje(@RequestBody Grupo grupo, @RequestParam Long id_usuario){
+        Grupo nuevogrupo = grupoServicio.crearGrupo(grupo, id_usuario);
         return ResponseEntity.ok(nuevogrupo);
 
     }
