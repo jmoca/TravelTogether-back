@@ -2,7 +2,7 @@ package dijj.traveltogetherback.servicio;
 
 import dijj.traveltogetherback.DTO.GrupoDTO;
 import dijj.traveltogetherback.DTO.ParticipanteDTO;
-import dijj.traveltogetherback.DTO.UsuarioCreadorDTO;
+
 import dijj.traveltogetherback.DTO.UsuarioDTO;
 import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.modelo.Usuario;
@@ -31,12 +31,23 @@ public class GrupoServicio implements IGrupoServicio {
     @Autowired
     private IUsuarioRepositorio usuarioRepositorio;
 
+    @Override
+    public Grupo crearGrupo(Grupo grupo, Long id_usuario) {
+        Usuario usuario = usuarioRepositorio.findById(id_usuario)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
-    public Grupo crearGrupo(Grupo grupo, Long idUsuarioCreador) {
-        // Buscar el usuario creador por su ID
-        Optional<Usuario> usuarios = usuarioRepositorio.findById(idUsuarioCreador);
-        grupo.getUsuarios().add(usuarios.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")));
-        return  grupoRepositorio.save(grupo);
+
+        if (usuario.getId_usuario() == null) {
+            usuario = usuarioRepositorio.save(usuario);
+        }
+
+        grupo.getUsuarios().add(usuario);
+
+        if (grupo.getIntegrantes() <= 0) {
+            throw new IllegalArgumentException("El número de integrantes no puede ser 0 o negativo");
+        }
+
+        return grupoRepositorio.save(grupo);
     }
 
 

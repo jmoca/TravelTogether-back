@@ -3,8 +3,7 @@ package dijj.traveltogetherback.modelo;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -31,14 +30,11 @@ public class Grupo {
     @Column(name = "integrantes")
     private int integrantes;
 
-
     @Column(name = "fecha_creacion")
     private String fechaCreacion;
 
     @Column(name = "multimedia")
     private String multimedia;
-
-
 
     @ManyToMany
     @JoinTable(
@@ -47,6 +43,5 @@ public class Grupo {
             joinColumns = @JoinColumn(name = "grupo"),
             inverseJoinColumns = @JoinColumn(name = "usuario")
     )
-    private List<Usuario> usuarios = new ArrayList<>();
-
+    private Set<Usuario> usuarios = new HashSet<>();
 }
