@@ -18,6 +18,18 @@ public class UsuarioServicio implements IUsuarioService {
         this.usuarioRepositorio = usuarioRepositorio;
     }
 
+    // Método para crear un usuario
+
+    public Usuario crearUsuario(Usuario usuario) {
+        return usuarioRepositorio.save(usuario);
+    }
+
+    // Método para obtener un usuario por ID
+    public Usuario obtenerUsuarioPorId(Long id) {
+        return usuarioRepositorio.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+    }
+
     // Método para obtener los amigos de un usuario
     public Set<Usuario> obtenerAmigos(Long id) {
         // Buscar el usuario por ID

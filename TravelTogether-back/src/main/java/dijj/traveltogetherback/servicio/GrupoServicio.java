@@ -36,7 +36,6 @@ public class GrupoServicio implements IGrupoServicio {
         Usuario usuario = usuarioRepositorio.findById(id_usuario)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
-
         if (usuario.getId_usuario() == null) {
             usuario = usuarioRepositorio.save(usuario);
         }
@@ -47,8 +46,15 @@ public class GrupoServicio implements IGrupoServicio {
             throw new IllegalArgumentException("El número de integrantes no puede ser 0 o negativo");
         }
 
+        // Validación de la longitud del nombre del grupo
+        String nombre = grupo.getNombre();
+        if (nombre == null || nombre.length() < 4 || nombre.length() > 50) {
+            throw new IllegalArgumentException("El nombre del grupo debe tener entre 4 y 50 caracteres");
+        }
+
         return grupoRepositorio.save(grupo);
     }
+
 
 
 
