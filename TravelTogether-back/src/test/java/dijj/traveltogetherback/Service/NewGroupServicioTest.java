@@ -1,9 +1,8 @@
-package dijj.traveltogetherback;
+package dijj.traveltogetherback.Service;
 
 import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.modelo.Usuario;
 import dijj.traveltogetherback.repositorio.IUsuarioRepositorio;
-import dijj.traveltogetherback.servicio.GrupoServicio;
 import dijj.traveltogetherback.servicio.IGrupoServicio;
 import dijj.traveltogetherback.servicio.UsuarioServicio;
 import org.junit.jupiter.api.DisplayName;
@@ -11,13 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class GrupoServicioTest {
+public class NewGroupServicioTest {
 
     @Autowired
     private IGrupoServicio grupoServicio;
@@ -52,17 +50,18 @@ public class GrupoServicioTest {
     @Test
     @DisplayName("Crear grupo correctamente")
     void crearGrupoCorrectamente() {
-        //Given
+        // Given
         Grupo grupo = new Grupo();
         grupo.setNombre("Via1 Test");
         grupo.setIntegrantes(5);  // Número de integrantes válido
         grupo.setUsuarios(new HashSet<>());  // Inicializar la lista de usuarios
         Usuario usuario = new Usuario();
-        usuario.setNombre("Test User");  // Set necessary fields for Usuario
+        usuario.setNombre("Test User");
+        grupo.setMultimedia("https://example.com/multimedia.jpg");  // URL válida
         usuario = usuarioRepositorio.save(usuario);
         grupo.getUsuarios().add(usuario);
 
-        //When
+        // When
         Grupo resultado = grupoServicio.crearGrupo(grupo, usuario.getId_usuario());
 
         // Then
@@ -101,5 +100,26 @@ public class GrupoServicioTest {
                 () -> grupoServicio.crearGrupo(grupo, 1L),
                 "El nombre del viaje debe tener entre 4 y 50 caracteres");
     }
+    @Test
+    @DisplayName("Validar URL multimedia inválida")
+    void testValidarURLMultimediaInvalida() {
+        Grupo grupo = new Grupo();
+        grupo.setNombre("Viaje a la montaña");
+        grupo.setIntegrantes(5);
+        grupo.setMultimedia("ftp://invalid-url"); // URL inválida
 
+        assertThrows(IllegalArgumentException.class,
+                () -> grupoServicio.crearGrupo(grupo, 1L),
+                "La URL multimedia debe comenzar con http:// o https:// y ser un dominio válido");
+    }
+    @Test
+    @DisplayName("Validar URL multimedia nula")
+    void testValidarURLMultimediaNula() {
+        Grupo grupo = new Grupo();
+        grupo.setNombre("Viaje a la montaña");
+        grupo.setIntegrantes(5);
+        grupo.setMultimedia(null); // URL nula permitida
+
+        assertDoesNotThrow(() -> grupoServicio.crearGrupo(grupo, 1L));
+    }
 }
