@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "usuario", schema = "travel", catalog = "postgres")
+@Table(name = "usuario", schema = "travel")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

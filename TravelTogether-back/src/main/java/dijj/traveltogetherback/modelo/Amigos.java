@@ -10,7 +10,7 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "amigos", schema = "travel", catalog = "postgres")
+@Table(name = "amigos", schema = "travel")
 public class Amigos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

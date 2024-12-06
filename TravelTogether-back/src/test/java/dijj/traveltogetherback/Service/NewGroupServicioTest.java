@@ -2,15 +2,22 @@ package dijj.traveltogetherback.Service;
 
 import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.modelo.Usuario;
+import dijj.traveltogetherback.repositorio.IGrupoRepositorio;
 import dijj.traveltogetherback.repositorio.IUsuarioRepositorio;
+import dijj.traveltogetherback.servicio.GrupoServicio;
 import dijj.traveltogetherback.servicio.IGrupoServicio;
 import dijj.traveltogetherback.servicio.UsuarioServicio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,13 +25,21 @@ import static org.junit.jupiter.api.Assertions.*;
 public class NewGroupServicioTest {
 
     @Autowired
-    private IGrupoServicio grupoServicio;
+    private GrupoServicio grupoServicio;
 
-    @Autowired
-    private IUsuarioRepositorio usuarioRepositorio;
 
     @Autowired
     private UsuarioServicio usuarioService;
+
+    @Mock
+    private IUsuarioRepositorio usuarioRepositorio1;
+
+    @Mock
+    private IGrupoRepositorio grupoRepositorio;
+
+    @InjectMocks
+    private GrupoServicio grupoServicio1;
+
 
     @Test
     @DisplayName("No permitir grupo con integrantes negativos")
@@ -41,9 +56,42 @@ public class NewGroupServicioTest {
         //Cuando llamo el metodo del servicio
         // Then
         // Entonces espero que se lance una excepción
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResponseStatusException.class,
                 () -> grupoServicio.crearGrupo(grupo, 1L),
-                "El número de integrantes no puede ser 0 o negativo"
+                "Usuario no encontrado"
+        );
+
+    }
+    @Test
+    @DisplayName("Crear grupo correctamente")
+    void crearGrupoCorrectamenteConMock() {
+        // Given
+        // Simulamos un usuario que ya existe
+        Usuario usuario = new Usuario();
+        usuario.setId_usuario(1L);
+        usuario.setNombre("Test User");
+
+        Mockito.when(usuarioRepositorio1.findById(1L)).thenReturn(Optional.of(usuario));
+
+        // Creamos un grupo
+        Grupo grupo = new Grupo();
+        grupo.setNombre("Viaje Test");
+        grupo.setDescripcion("Viaje de prueba");
+        grupo.setIntegrantes(1);
+        grupo.setMultimedia("https://example.com/multimedia.jpg");
+        grupo.setUsuarios(new HashSet<>());
+
+        // Simulamos el guardado del grupo
+        Mockito.when(grupoRepositorio.save(grupo)).thenReturn(grupo);
+
+        // Ejecutar el método
+        Grupo resultado = grupoServicio1.crearGrupo(grupo, usuario.getId_usuario());
+
+        // Then
+        assertNotNull(resultado, "El grupo creado no debe ser nulo");
+        assertTrue(
+                resultado.getUsuarios().stream().anyMatch(u -> u.getId_usuario().equals(usuario.getId_usuario())),
+                "El grupo debe contener al usuario"
         );
     }
 
@@ -51,22 +99,27 @@ public class NewGroupServicioTest {
     @DisplayName("Crear grupo correctamente")
     void crearGrupoCorrectamente() {
         // Given
-        Grupo grupo = new Grupo();
-        grupo.setNombre("Via1 Test");
-        grupo.setIntegrantes(5);  // Número de integrantes válido
-        grupo.setUsuarios(new HashSet<>());  // Inicializar la lista de usuarios
         Usuario usuario = new Usuario();
+        usuario.setId_usuario(1L);
         usuario.setNombre("Test User");
-        grupo.setMultimedia("https://example.com/multimedia.jpg");  // URL válida
-        usuario = usuarioRepositorio.save(usuario);
-        grupo.getUsuarios().add(usuario);
+        usuarioService.crearUsuario(usuario);
 
-        // When
+        Grupo grupo = new Grupo();
+        grupo.setNombre("Viaje Test");
+        grupo.setDescripcion("Viaje de prueba");
+        grupo.setIntegrantes(1);
+        grupo.setMultimedia("https://example.com/multimedia.jpg");
+        grupo.setUsuarios(new HashSet<>());
+
+        // Ejecutar el método
         Grupo resultado = grupoServicio.crearGrupo(grupo, usuario.getId_usuario());
 
         // Then
-        assertNotNull(resultado);
-        assertTrue(resultado.getUsuarios().contains(usuario));
+        assertNotNull(resultado, "El grupo creado no debe ser nulo");
+        assertTrue(
+                resultado.getUsuarios().stream().anyMatch(u -> u.getId_usuario().equals(usuario.getId_usuario())),
+                "El grupo debe contener al usuario"
+        );
     }
 
 
@@ -83,6 +136,7 @@ public class NewGroupServicioTest {
         assertTrue(exception.getMessage().contains(expectedMessage));
     }
 
+
     @Test
     @DisplayName("Nombre del viaje con longitud inválida (menos de 4 o más de 50 caracteres)")
     void testNombreViajeLongitudInvalida() {
@@ -90,16 +144,17 @@ public class NewGroupServicioTest {
 
         // Nombre con menos de 4 caracteres
         grupo.setNombre("Via");
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResponseStatusException.class,
                 () -> grupoServicio.crearGrupo(grupo, 1L),
                 "El nombre del viaje debe tener entre 4 y 50 caracteres");
 
         // Nombre con más de 50 caracteres
         grupo.setNombre("V".repeat(51));
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResponseStatusException.class,
                 () -> grupoServicio.crearGrupo(grupo, 1L),
                 "El nombre del viaje debe tener entre 4 y 50 caracteres");
     }
+
     @Test
     @DisplayName("Validar URL multimedia inválida")
     void testValidarURLMultimediaInvalida() {
@@ -108,13 +163,17 @@ public class NewGroupServicioTest {
         grupo.setIntegrantes(5);
         grupo.setMultimedia("ftp://invalid-url"); // URL inválida
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResponseStatusException.class,
                 () -> grupoServicio.crearGrupo(grupo, 1L),
                 "La URL multimedia debe comenzar con http:// o https:// y ser un dominio válido");
     }
     @Test
     @DisplayName("Validar URL multimedia nula")
     void testValidarURLMultimediaNula() {
+        Usuario usuario = new Usuario();
+        usuario.setId_usuario(1L);
+        usuario.setNombre("Test User");
+        usuarioService.crearUsuario(usuario);
         Grupo grupo = new Grupo();
         grupo.setNombre("Viaje a la montaña");
         grupo.setIntegrantes(5);

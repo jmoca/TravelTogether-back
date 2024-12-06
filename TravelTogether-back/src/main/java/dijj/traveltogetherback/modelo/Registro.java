@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "registro", schema = "Travel", catalog = "postgres")
+@Table(name = "registro", schema = "Travel")
 public class Registro {
     @Id
     @Column(name = "id_registro")

@@ -24,6 +24,7 @@ public class GrupoDTO {
     private Long idUsuarioCreador;
 
     private String multimedia;
+    private List<UsuarioDTO> usuarios;
 
 
 

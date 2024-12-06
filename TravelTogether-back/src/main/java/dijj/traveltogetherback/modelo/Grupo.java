@@ -12,9 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-
 @Entity
-@Table(name = "grupos", schema = "travel", catalog = "postgres")
+@Table(name = "grupos", schema = "travel")
 public class Grupo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

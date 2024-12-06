@@ -14,7 +14,7 @@ import java.util.Set;
 @ToString
 
 @Entity
-@Table(name = "actividades", schema = "Travel", catalog = "postgres")
+@Table(name = "actividades", schema = "travel")
 public class Actividad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -41,6 +41,7 @@ public class GrupoServicio implements IGrupoServicio {
         }
 
         grupo.getUsuarios().add(usuario);
+        usuarioRepositorio.save(usuario);
 
         if (grupo.getIntegrantes() <= 0) {
             throw new IllegalArgumentException("El número de integrantes no puede ser 0 o negativo");
@@ -56,6 +57,7 @@ public class GrupoServicio implements IGrupoServicio {
         if (multimedia != null && !multimedia.matches("^(https?://).*")) {
             throw new IllegalArgumentException("La URL multimedia debe comenzar con http:// o https:// y ser un dominio válido");
         }
+
         return grupoRepositorio.save(grupo);
     }
 

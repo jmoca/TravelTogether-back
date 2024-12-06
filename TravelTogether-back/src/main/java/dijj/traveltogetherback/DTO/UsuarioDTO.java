@@ -13,4 +13,8 @@ public class UsuarioDTO {
 
     private Long id;
     private String nombre;
+
+    public Long getId_usuario() {
+        return id;
+    }
 }

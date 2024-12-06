@@ -14,7 +14,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "itinerario", schema = "Travel", catalog = "postgres")
+@Table(name = "itinerario", schema = "Travel")
 public class Itinerario {
     @Id
     @Column (name = "id_itinerario")
