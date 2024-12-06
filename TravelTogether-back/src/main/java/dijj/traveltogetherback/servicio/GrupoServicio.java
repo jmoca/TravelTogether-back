@@ -8,6 +8,7 @@ import dijj.traveltogetherback.modelo.Grupo;
 import dijj.traveltogetherback.modelo.Usuario;
 import dijj.traveltogetherback.repositorio.IGrupoRepositorio;
 import dijj.traveltogetherback.repositorio.IUsuarioRepositorio;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,7 +65,7 @@ public class GrupoServicio implements IGrupoServicio {
 
 
 
-
+    @Transactional
     public GrupoDTO nuevoPartiGrup(Long idUsuario, Long id_grupo) {
         ArrayList<UsuarioDTO> usuariosdto = new ArrayList<>();
 

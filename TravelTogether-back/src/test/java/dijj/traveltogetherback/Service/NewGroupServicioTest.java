@@ -56,7 +56,7 @@ public class NewGroupServicioTest {
         //Cuando llamo el metodo del servicio
         // Then
         // Entonces espero que se lance una excepción
-        assertThrows(ResponseStatusException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> grupoServicio.crearGrupo(grupo, 1L),
                 "Usuario no encontrado"
         );
@@ -144,13 +144,13 @@ public class NewGroupServicioTest {
 
         // Nombre con menos de 4 caracteres
         grupo.setNombre("Via");
-        assertThrows(ResponseStatusException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> grupoServicio.crearGrupo(grupo, 1L),
                 "El nombre del viaje debe tener entre 4 y 50 caracteres");
 
         // Nombre con más de 50 caracteres
         grupo.setNombre("V".repeat(51));
-        assertThrows(ResponseStatusException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> grupoServicio.crearGrupo(grupo, 1L),
                 "El nombre del viaje debe tener entre 4 y 50 caracteres");
     }
@@ -163,7 +163,7 @@ public class NewGroupServicioTest {
         grupo.setIntegrantes(5);
         grupo.setMultimedia("ftp://invalid-url"); // URL inválida
 
-        assertThrows(ResponseStatusException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> grupoServicio.crearGrupo(grupo, 1L),
                 "La URL multimedia debe comenzar con http:// o https:// y ser un dominio válido");
     }

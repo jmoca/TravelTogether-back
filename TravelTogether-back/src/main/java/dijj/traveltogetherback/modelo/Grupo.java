@@ -43,4 +43,8 @@ public class Grupo {
             inverseJoinColumns = @JoinColumn(name = "usuario")
     )
     private Set<Usuario> usuarios = new HashSet<>();
+
+    //@ManyToOne
+    //@JoinColumn(name = "id_usuario_creador", referencedColumnName = "id_usuario", nullable = false)
+    //private Usuario usuarioCreador;
 }
