@@ -3,6 +3,8 @@ package dijj.traveltogetherback.modelo;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -26,6 +28,6 @@ public class Amigos {
     private Usuario usuario2;
 
     @Column(name = "fecha_amistad")
-    private String fecha_amistad;
+    private LocalDate fecha_amistad;
 
 }

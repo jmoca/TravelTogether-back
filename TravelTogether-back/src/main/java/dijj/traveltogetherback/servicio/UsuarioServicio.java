@@ -35,7 +35,7 @@ public class UsuarioServicio implements IUsuarioService {
         // Buscar el usuario por ID
         Optional<Usuario> usuarioOpt = usuarioRepositorio.findById(id);
         if (usuarioOpt.isEmpty()) {
-            return Set.of(); // Retorna un conjunto vacío si no se encuentra el usuario
+            throw new IllegalArgumentException("Usuario no encontrado");
         }
 
         // Obtiene el usuario y su lista de amigos usando el método getAmigos()

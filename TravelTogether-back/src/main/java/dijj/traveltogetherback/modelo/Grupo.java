@@ -44,7 +44,6 @@ public class Grupo {
     )
     private Set<Usuario> usuarios = new HashSet<>();
 
-    //@ManyToOne
-    //@JoinColumn(name = "id_usuario_creador", referencedColumnName = "id_usuario", nullable = false)
-    //private Usuario usuarioCreador;
+    @Column(name = "id_usuario_creador")
+    private Long idUsuarioCreador;
 }

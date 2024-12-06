@@ -42,6 +42,7 @@ public class GrupoServicio implements IGrupoServicio {
         }
 
         grupo.getUsuarios().add(usuario);
+        grupo.setIdUsuarioCreador(id_usuario);
         usuarioRepositorio.save(usuario);
 
         if (grupo.getIntegrantes() <= 0) {
@@ -61,9 +62,6 @@ public class GrupoServicio implements IGrupoServicio {
 
         return grupoRepositorio.save(grupo);
     }
-
-
-
 
     @Transactional
     public GrupoDTO nuevoPartiGrup(Long idUsuario, Long id_grupo) {
@@ -87,6 +85,7 @@ public class GrupoServicio implements IGrupoServicio {
 
         grupo.getUsuarios().add(usuario);
         grupoRepositorio.save(grupo);
+        usuarioRepositorio.save(usuario);
 
         for (Usuario u : grupo.getUsuarios()) {
             UsuarioDTO usedto = new UsuarioDTO();
@@ -101,6 +100,8 @@ public class GrupoServicio implements IGrupoServicio {
         grupoDTO.setDescripcion(grupo.getDescripcion());
         grupoDTO.setIntegrantes(grupo.getIntegrantes());
         grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
+        grupoDTO.setIdUsuarioCreador(grupo.getIdUsuarioCreador()); // Mantener el idUsuarioCreador
+        grupoDTO.setUsuarios(usuariosdto);
 
         return grupoDTO;
     }
@@ -126,30 +127,57 @@ public class GrupoServicio implements IGrupoServicio {
 
         return participanteDTO;
     }
-    public GrupoDTO eliminarPartiGrup(Long id_usuario, Long id_grupo){
-        ArrayList<UsuarioDTO> usuariosdto = new ArrayList<>();
-        Grupo grupo = grupoRepositorio.findById(id_grupo).orElseThrow(() -> new RuntimeException("No existe el grupo"));
-        Usuario usuario = usuarioRepositorio.findById(id_usuario).orElseThrow(()-> new RuntimeException("No existe el grupo"));
+    public GrupoDTO eliminarPartiGrup(Long id_usuario, Long id_grupo) {
+        // Validar que los IDs no sean nulos
+        if (id_usuario == null || id_grupo == null) {
+            throw new IllegalArgumentException("El ID del usuario o del grupo no puede ser nulo");
+        }
 
+        // Buscar el grupo y lanzar excepción si no existe
+        Grupo grupo = grupoRepositorio.findById(id_grupo)
+                .orElseThrow(() -> new RuntimeException("No existe el grupo con el ID: " + id_grupo));
+
+        // Buscar el usuario y lanzar excepción si no existe
+        Usuario usuario = usuarioRepositorio.findById(id_usuario)
+                .orElseThrow(() -> new RuntimeException("No existe el usuario con el ID: " + id_usuario));
+
+        // Validar si el grupo tiene usuarios asociados
+        if (grupo.getUsuarios() == null || grupo.getUsuarios().isEmpty()) {
+            throw new RuntimeException("El grupo no tiene usuarios asignados");
+        }
+
+        // Validar si el usuario pertenece al grupo
+        if (!grupo.getUsuarios().contains(usuario)) {
+            throw new RuntimeException("El usuario con ID: " + id_usuario + " no pertenece al grupo con ID: " + id_grupo);
+        }
+
+        // Remover al usuario del grupo
         grupo.getUsuarios().remove(usuario);
+
+        // Guardar los cambios en el repositorio
         grupoRepositorio.save(grupo);
-        for (Usuario u: grupo.getUsuarios()){
+
+        // Crear el DTO de los usuarios restantes
+        ArrayList<UsuarioDTO> usuariosdto = new ArrayList<>();
+        for (Usuario u : grupo.getUsuarios()) {
             UsuarioDTO usedto = new UsuarioDTO();
             usedto.setId(u.getId_usuario());
             usedto.setNombre(u.getNombre());
             usuariosdto.add(usedto);
         }
+
+        // Crear el DTO del grupo actualizado
         GrupoDTO grupoDTO = new GrupoDTO();
         grupoDTO.setId_grupo(grupo.getId_grupo());
         grupoDTO.setNombre(grupo.getNombre());
         grupoDTO.setDescripcion(grupo.getDescripcion());
         grupoDTO.setIntegrantes(grupo.getIntegrantes());
-
         grupoDTO.setFechaCreacion(grupo.getFechaCreacion());
-
+        grupoDTO.setUsuarios(usuariosdto);
 
         return grupoDTO;
     }
+
     public List<GrupoDTO> obtenerGruposPorUsuario(Long id_usuario){
         List<Grupo> grupos = grupoRepositorio.findGruposByUsuarioId(id_usuario);
         List<GrupoDTO> grupoDTOs = new ArrayList<>();

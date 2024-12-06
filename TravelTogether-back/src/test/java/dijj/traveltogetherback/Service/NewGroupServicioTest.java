@@ -44,23 +44,25 @@ public class NewGroupServicioTest {
     @Test
     @DisplayName("No permitir grupo con integrantes negativos")
     void noPermitirIntegrantesNegativos() {
-        //Given
-        // Datos iniciales para hacer el test
+        // Given
         Grupo grupo = new Grupo();
         grupo.setIntegrantes(-1);
         grupo.setUsuarios(new HashSet<>());
         Usuario usuario = new Usuario();
+        usuario.setId_usuario(1L);
         grupo.getUsuarios().add(usuario);
 
-        //When
-        //Cuando llamo el metodo del servicio
-        // Then
-        // Entonces espero que se lance una excepción
-        assertThrows(IllegalArgumentException.class,
-                () -> grupoServicio.crearGrupo(grupo, 1L),
-                "Usuario no encontrado"
-        );
+        // Mock the user repository to return a valid user
+        Mockito.when(usuarioRepositorio1.findById(1L)).thenReturn(Optional.of(usuario));
 
+        // When & Then
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> grupoServicio1.crearGrupo(grupo, 1L));
+
+        // Verificar que el mensaje de la excepción sea el esperado
+        String expectedMessage = "El número de integrantes no puede ser 0 o negativo";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
     @Test
     @DisplayName("Crear grupo correctamente")
