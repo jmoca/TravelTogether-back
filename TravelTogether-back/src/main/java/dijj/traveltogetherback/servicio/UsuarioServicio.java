@@ -1,7 +1,9 @@
 package dijj.traveltogetherback.servicio;
 
 import dijj.traveltogetherback.DTO.UsuarioDTO;
+import dijj.traveltogetherback.modelo.Amigos;
 import dijj.traveltogetherback.modelo.Usuario;
+import dijj.traveltogetherback.repositorio.IAmigoRepositorio;
 import dijj.traveltogetherback.repositorio.IUsuarioRepositorio;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +15,14 @@ import java.util.stream.Collectors;
 public class UsuarioServicio implements IUsuarioService {
 
     private final IUsuarioRepositorio usuarioRepositorio;
+    private final IAmigoRepositorio amigoRepositorio;
 
-    public UsuarioServicio(IUsuarioRepositorio usuarioRepositorio) {
+    public UsuarioServicio(IUsuarioRepositorio usuarioRepositorio, IAmigoRepositorio amigoRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
+        this.amigoRepositorio = amigoRepositorio;
     }
 
     // Método para crear un usuario
-
     public Usuario crearUsuario(Usuario usuario) {
         return usuarioRepositorio.save(usuario);
     }
@@ -38,10 +41,16 @@ public class UsuarioServicio implements IUsuarioService {
             throw new IllegalArgumentException("Usuario no encontrado");
         }
 
-        // Obtiene el usuario y su lista de amigos usando el método getAmigos()
+        // Obtiene el usuario y su lista de amigos usando el método findByUsuario1OrUsuario2
         Usuario usuario = usuarioOpt.get();
-        return usuario.getAmigos();
+        Set<Usuario> amigos = amigoRepositorio.findByUsuario1OrUsuario2(usuario, usuario).stream()
+                .flatMap(amigo -> Set.of(amigo.getUsuario1(), amigo.getUsuario2()).stream())
+                .filter(u -> !u.equals(usuario))
+                .collect(Collectors.toSet());
+
+        return amigos;
     }
+
     public Set<UsuarioDTO> obtenerAmigosDTO(Long id_usuario) {
         Set<Usuario> amigos = obtenerAmigos(id_usuario);
         return amigos.stream()
@@ -52,5 +61,4 @@ public class UsuarioServicio implements IUsuarioService {
     private UsuarioDTO convertirADTO(Usuario usuario) {
         return new UsuarioDTO(usuario.getId_usuario(), usuario.getNombre());
     }
-
 }

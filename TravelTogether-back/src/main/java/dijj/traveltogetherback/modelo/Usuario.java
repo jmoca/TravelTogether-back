@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"usuario1", "usuario2"})
+@ToString(exclude = {"usuario1", "usuario2"})
 @Entity
 @Table(name = "usuario", schema = "travel")
 public class Usuario {

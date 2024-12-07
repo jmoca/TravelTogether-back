@@ -9,8 +9,8 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"usuario1", "usuario2"})
+@ToString(exclude = {"usuario1", "usuario2"})
 @Entity
 @Table(name = "amigos", schema = "travel")
 public class Amigos {

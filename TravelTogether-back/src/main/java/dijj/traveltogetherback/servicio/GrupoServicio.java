@@ -181,6 +181,12 @@ public class GrupoServicio implements IGrupoServicio {
     public List<GrupoDTO> obtenerGruposPorUsuario(Long id_usuario){
         List<Grupo> grupos = grupoRepositorio.findGruposByUsuarioId(id_usuario);
         List<GrupoDTO> grupoDTOs = new ArrayList<>();
+        // Verificar si el usuario existe en la base de datos
+        boolean usuarioExiste = usuarioRepositorio.existsById(id_usuario);
+        if (!usuarioExiste) {
+            throw new IllegalArgumentException("Usuario no encontrado");
+        }
+
         for (Grupo grupo : grupos) {
             GrupoDTO grupoDTO = new GrupoDTO();
             grupoDTO.setId_grupo(grupo.getId_grupo());

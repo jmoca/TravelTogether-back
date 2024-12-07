@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ManyToAny;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -31,7 +32,7 @@ public class Actividad {
     private String multimedia;
 
     @Column(name = "fecha_actividad")
-    private String fecha;
+    private LocalDate fecha;
 
     @Column(name = "lugar")
     private String lugar;

@@ -14,6 +14,7 @@ import dijj.traveltogetherback.repositorio.IVotoRepositorio;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -36,25 +37,49 @@ public class ActividadServicio {
 
     // Método para crear una nueva actividad
     public ActividadDTO crearActividad(Long idUsuario, Long id_grupo, Actividad actividad) {
-        Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(idUsuario);
-        Optional<Grupo> grupoOptional = grupoRepositorio.findById(id_grupo);
-
-        if (usuarioOptional.isPresent() && grupoOptional.isPresent()) {
-            actividad.setUsuarios(usuarioOptional.get());
-            actividad.setGrupo(grupoOptional.get());
-            actividadRepositorio.save(actividad);
-            return new ActividadDTO(
-                    actividad.getId_actividad(),
-                    actividad.getNombre(),
-                    actividad.getDescripcion(),
-                    actividad.getFecha(),
-                    actividad.getLugar(),
-                    actividad.getMultimedia(),
-                    null
-            );
-        } else {
-            throw new IllegalArgumentException("Usuario o Grupo no encontrado con los IDs proporcionados");
+        // Validar datos nulos
+        if (actividad == null || idUsuario == null || id_grupo == null) {
+            throw new IllegalArgumentException("Los datos de la actividad, usuario o grupo no pueden ser nulos");
         }
+
+        // Validar que el usuario existe
+        Usuario usuario = usuarioRepositorio.findById(idUsuario)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con el ID proporcionado"));
+
+        // Validar que el grupo existe
+        Grupo grupo = grupoRepositorio.findById(id_grupo)
+                .orElseThrow(() -> new IllegalArgumentException("Grupo no encontrado con el ID proporcionado"));
+
+        // Validar si el usuario es participante del grupo
+        if (!grupo.getUsuarios().contains(usuario)) {
+            throw new IllegalArgumentException("El usuario no pertenece al grupo especificado");
+        }
+
+        // Validar la fecha de la actividad
+        if (actividad.getFecha() == null || actividad.getFecha().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha de la actividad no puede ser una fecha pasada");
+        }
+
+        // Validar el nombre de la actividad
+        String nombre = actividad.getNombre();
+        if (nombre == null || nombre.length() < 4 || nombre.length() > 50) {
+            throw new IllegalArgumentException("El nombre de la actividad debe tener entre 4 y 50 caracteres");
+        }
+
+        // Establecer la relación y guardar la actividad
+        actividad.setUsuarios(usuario);
+        actividad.setGrupo(grupo);
+        actividadRepositorio.save(actividad);
+
+        return new ActividadDTO(
+                actividad.getId_actividad(),
+                actividad.getNombre(),
+                actividad.getDescripcion(),
+                actividad.getFecha(),
+                actividad.getLugar(),
+                actividad.getMultimedia(),
+                null
+        );
     }
 
     
