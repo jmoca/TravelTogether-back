@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Getter
 @Setter
@@ -29,7 +30,7 @@ public class Voto {
     private Usuario usuario;
 
     @Column(name = "fecha_voto")
-    private LocalDateTime fechaVoto = LocalDateTime.now();
+    private LocalDate fechaVoto = LocalDate.now();
     public boolean getTipo_voto() {
         return tipo_voto;
     }

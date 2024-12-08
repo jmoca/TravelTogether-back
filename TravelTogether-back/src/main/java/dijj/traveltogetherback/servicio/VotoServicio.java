@@ -10,6 +10,7 @@ import dijj.traveltogetherback.repositorio.IVotoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,42 +29,52 @@ public class VotoServicio {
     @Autowired
     private IActividadRepositorio actividadRepositorio;
 
-    public VotoDTO actualizarVoto(Long id_usuario, Long id_actividad, boolean tipo_voto) {
-        // Verificamos si el usuario ya ha votado en la actividad
-        Voto votoExistente = votoRepositorio.findvotoId(id_usuario, id_actividad);
+    public VotoDTO actualizarVoto(Long id_usuario, Long id_actividad, Boolean tipo_voto) {
+        // Validar que el usuario exista
+        Usuario usuario = usuarioRepositorio.findById(id_usuario)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + id_usuario));
 
-        // Si existe, actualizamos el voto
+        // Validar que la actividad exista
+        Actividad actividad = actividadRepositorio.findById(id_actividad)
+                .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada con ID: " + id_actividad));
+
+        // Validar que el tipo de voto no sea nulo
+        if (tipo_voto == null) {
+            throw new IllegalArgumentException("El tipo de voto no puede ser nulo");
+        }
+
+        // Verificar si el usuario ya votó en la actividad
+        Voto votoExistente = votoRepositorio.findvotoId(id_usuario, id_actividad);
         if (votoExistente != null) {
-            votoExistente.setTipo_voto(tipo_voto);  // Actualizamos el tipo de voto
-            votoRepositorio.save(votoExistente);  // Guardamos el voto actualizado
-            // Devolvemos un VotoDTO con los datos del voto actualizado
+            // Actualizar el voto existente
+            votoExistente.setTipo_voto(tipo_voto);
+            votoRepositorio.save(votoExistente);
             return new VotoDTO(votoExistente.getId_voto(), votoExistente.getTipo_voto(),
                     votoExistente.getActividad().getId_actividad(),
                     votoExistente.getUsuario().getId_usuario(), votoExistente.getFechaVoto());
-        } else {
-            // Si no existe, creamos un nuevo voto
-            Voto nuevoVoto = new Voto();
-            nuevoVoto.setTipo_voto(tipo_voto);  // Establecemos el tipo de voto
-
-            // Aquí tendríamos que asignar la actividad y el usuario al nuevo voto
-            // Si estás recibiendo estos valores desde algún lugar, asegúrate de asignarlos
-            Actividad actividad = new Actividad();
-            actividad.setId_actividad(id_actividad);
-            Usuario usuario = new Usuario();
-            usuario.setId_usuario(id_usuario);
-
-            nuevoVoto.setActividad(actividad);
-            nuevoVoto.setUsuario(usuario);
-
-            // Guardamos el nuevo voto
-            votoRepositorio.save(nuevoVoto);
-
-            // Devolvemos un VotoDTO con los datos del nuevo voto
-            return new VotoDTO(nuevoVoto.getId_voto(), nuevoVoto.getTipo_voto(),
-                    nuevoVoto.getActividad().getId_actividad(),
-                    nuevoVoto.getUsuario().getId_usuario(), nuevoVoto.getFechaVoto());
         }
+
+        // Validar el número máximo de votos para la actividad
+        int totalVotos = votoRepositorio.countByActividadId(id_actividad);
+        final int MAX_VOTOS = 10;
+        if (totalVotos >= MAX_VOTOS) {
+            throw new IllegalStateException("Se ha alcanzado el número máximo de votos para esta actividad");
+        }
+
+        // Crear un nuevo voto
+        Voto nuevoVoto = new Voto();
+        nuevoVoto.setTipo_voto(tipo_voto);
+        nuevoVoto.setUsuario(usuario);
+        nuevoVoto.setActividad(actividad);
+        nuevoVoto.setFechaVoto(LocalDate.now());
+
+        votoRepositorio.save(nuevoVoto);
+
+        return new VotoDTO(nuevoVoto.getId_voto(), nuevoVoto.getTipo_voto(),
+                nuevoVoto.getActividad().getId_actividad(),
+                nuevoVoto.getUsuario().getId_usuario(), nuevoVoto.getFechaVoto());
     }
+
 
     public List<Map<String, Object>> votostotalActividad(Long id_actividad) {
         List<Object[]> resultados = votoRepositorio.totalvotos();

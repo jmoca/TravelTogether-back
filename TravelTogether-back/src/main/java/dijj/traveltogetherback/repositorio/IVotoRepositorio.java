@@ -19,4 +19,7 @@ public interface IVotoRepositorio extends JpaRepository<Voto, Long> {
 
     @Query("SELECT v FROM Voto v WHERE v.usuario.id_usuario = :id_usuario AND v.actividad.id_actividad = :id_actividad")
     Voto findvotoId(Long id_usuario, Long id_actividad);
+
+    @Query("SELECT COUNT(v) FROM Voto v WHERE v.actividad.id_actividad = :id_actividad")
+    int countByActividadId(Long id_actividad);
 }

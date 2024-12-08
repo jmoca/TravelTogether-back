@@ -10,6 +10,7 @@ import dijj.traveltogetherback.repositorio.IUsuarioRepositorio;
 import dijj.traveltogetherback.servicio.ActividadServicio;
 import dijj.traveltogetherback.servicio.GrupoServicio;
 import dijj.traveltogetherback.servicio.UsuarioServicio;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ public class NewActivityTest {
         Actividad actividad = new Actividad();
         actividad.setNombre("Caminata");
         actividad.setDescripcion("Caminata al aire libre");
-        actividad.setFecha(LocalDate.now().plusDays(1));
+        actividad.setFecha_fin(LocalDate.now().plusDays(1));
         actividad.setLugar("Montaña");
 
         // Simular repositorios
@@ -85,7 +86,7 @@ public class NewActivityTest {
         assertEquals("El nombre de la actividad debe coincidir", actividad.getNombre(), actividadDTO.getNombre());
         verify(actividadRepositorio1, times(1)).save(actividad);
     }
-
+    @Transactional
     @Test
     @DisplayName("Proponer una actividad válida para un viaje existente")
     void proponerActividadValida() {
@@ -106,7 +107,7 @@ public class NewActivityTest {
         Actividad actividad = new Actividad();
         actividad.setNombre("Caminata en el bosque");
         actividad.setDescripcion("Actividad para explorar la fauna local");
-        actividad.setFecha(LocalDate.now().plusDays(1)); // Fecha válida
+        actividad.setFecha_inicio(LocalDate.now()); // Fecha válida
         actividad.setLugar("Bosque Nacional");
 
         ActividadDTO actividadCreada = actividadServicio.crearActividad(usuario.getId_usuario(), grupo.getId_grupo(), actividad);
@@ -115,9 +116,9 @@ public class NewActivityTest {
         assertNotNull("La actividad no debe ser nula", actividadCreada);
         assertEquals("El nombre de la actividad debe coincidir", "Caminata en el bosque", actividadCreada.getNombre());
         assertEquals("La descripción de la actividad debe coincidir", "Actividad para explorar la fauna local", actividadCreada.getDescripcion());
-        assertEquals("La fecha de la actividad debe coincidir", LocalDate.now().plusDays(1), actividadCreada.getFecha());
+        assertEquals("La fecha de la actividad debe coincidir", LocalDate.now().plusDays(1), actividadCreada.getFecha_inicio());
     }
-
+    @Transactional
     @Test
     @DisplayName("Intentar crear una actividad con un usuario no participante en el grupo")
     void actividadUsuarioNoParticipante() {
@@ -142,7 +143,7 @@ public class NewActivityTest {
         final Actividad actividad = new Actividad();
         actividad.setNombre("Actividades en la arena");
         actividad.setDescripcion("Construir castillos de arena");
-        actividad.setFecha(LocalDate.now().plusDays(1));
+        actividad.setFecha_fin(LocalDate.now().plusDays(1));
         actividad.setLugar("Playa");
 
         // Intentar crear actividad
@@ -153,7 +154,7 @@ public class NewActivityTest {
         // Verificar el mensaje de error
         Assertions.assertEquals("El usuario no pertenece al grupo especificado", exception.getMessage());
     }
-
+    @Transactional
     @Test
     @DisplayName("Proponer una actividad para una fecha que ya ha pasado")
     void actividadFechaPasada() {
@@ -174,7 +175,7 @@ public class NewActivityTest {
         final Actividad actividad = new Actividad();
         actividad.setNombre("Caminata nocturna");
         actividad.setDescripcion("Explorar la montaña de noche");
-        actividad.setFecha(LocalDate.now().minusDays(1)); // Fecha pasada
+        actividad.setFecha_fin(LocalDate.now().minusDays(1)); // Fecha pasada
         actividad.setLugar("Montaña");
 
         // Intentar crear actividad
@@ -185,7 +186,7 @@ public class NewActivityTest {
         // Verificar el mensaje de error
         Assertions.assertEquals("La fecha de la actividad no puede ser una fecha pasada", exception.getMessage());
     }
-
+    @Transactional
     @Test
     @DisplayName("Crear actividad para un grupo con nombre de 4 a 50 caracteres")
     void actividadConNombreGrupoLimite() {
@@ -206,7 +207,7 @@ public class NewActivityTest {
         Actividad actividad = new Actividad();
         actividad.setNombre("Senderismo");
         actividad.setDescripcion("Caminata en senderos");
-        actividad.setFecha(LocalDate.now().plusDays(1)); // Fecha válida
+        actividad.setFecha_fin(LocalDate.now().plusDays(1)); // Fecha válida
         actividad.setLugar("Montaña");
 
         ActividadDTO actividadCreada = actividadServicio.crearActividad(usuario.getId_usuario(), grupo.getId_grupo(), actividad);

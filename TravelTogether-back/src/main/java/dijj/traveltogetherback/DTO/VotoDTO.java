@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -14,8 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class VotoDTO {
     private Long idVoto;
-    private boolean tipo_voto;
+    private Boolean tipo_voto;
     private Long idActividad;
     private Long idUsuario;
-    private LocalDateTime fechaVoto;
+    private LocalDate fechaVoto;
 }

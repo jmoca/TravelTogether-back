@@ -16,7 +16,7 @@ public class ActividadDTO {
     private Long id;
     private String nombre;
     private String descripcion;
-    private LocalDate fecha;
+    private LocalDate fecha_inicio;
     private String lugar;
     private String multimedia;
     private String estado;

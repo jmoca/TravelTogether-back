@@ -31,8 +31,11 @@ public class Actividad {
     @Column(name = "multimedia")
     private String multimedia;
 
-    @Column(name = "fecha_actividad")
-    private LocalDate fecha;
+    @Column(name = "fecha_actividad_inicio")
+    private LocalDate fecha_inicio;
+
+    @Column(name = "fecha_actividad_fin")
+    private LocalDate fecha_fin;
 
     @Column(name = "lugar")
     private String lugar;

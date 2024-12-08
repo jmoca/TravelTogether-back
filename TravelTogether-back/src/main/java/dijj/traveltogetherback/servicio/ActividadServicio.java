@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,7 @@ public class ActividadServicio {
         }
 
         // Validar la fecha de la actividad
-        if (actividad.getFecha() == null || actividad.getFecha().isBefore(LocalDate.now())) {
+        if (actividad.getFecha_inicio() == null || actividad.getFecha_inicio().isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha de la actividad no puede ser una fecha pasada");
         }
 
@@ -75,33 +76,50 @@ public class ActividadServicio {
                 actividad.getId_actividad(),
                 actividad.getNombre(),
                 actividad.getDescripcion(),
-                actividad.getFecha(),
+                actividad.getFecha_inicio(),
                 actividad.getLugar(),
                 actividad.getMultimedia(),
                 null
         );
     }
 
-    
-
-
-
-
     public List<ActividadDTO> obtenerActividades(Long id_grupo) {
+        // Validar que el ID del grupo no sea nulo
+        if (id_grupo == null) {
+            throw new IllegalArgumentException("El ID del grupo no puede ser nulo.");
+        }
+
+        // Verificar si el grupo existe
+        boolean grupoExiste = grupoRepositorio.existsById(id_grupo);
+        if (!grupoExiste) {
+            throw new NoSuchElementException("El grupo con ID " + id_grupo + " no existe.");
+        }
+
+        // Obtener todas las actividades
         List<Actividad> actividades = actividadRepositorio.findAll();
-        return actividades.stream()
+
+        // Filtrar y mapear actividades asociadas al grupo
+        List<ActividadDTO> actividadesGrupo = actividades.stream()
                 .filter(actividad -> actividad.getGrupo() != null && actividad.getGrupo().getId_grupo().equals(id_grupo))
                 .map(actividad -> new ActividadDTO(
                         actividad.getId_actividad(),
                         actividad.getNombre(),
                         actividad.getDescripcion(),
-                        actividad.getFecha(),
+                        actividad.getFecha_inicio(),
                         actividad.getLugar(),
                         actividad.getMultimedia(),
                         null
                 ))
                 .collect(Collectors.toList());
+
+        // Verificar si el grupo no tiene actividades asociadas
+        if (actividadesGrupo.isEmpty()) {
+            throw new NoSuchElementException("El grupo con ID " + id_grupo + " no tiene actividades asociadas.");
+        }
+
+        return actividadesGrupo;
     }
+
 
 
 

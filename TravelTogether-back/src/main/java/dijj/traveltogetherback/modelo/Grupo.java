@@ -35,6 +35,9 @@ public class Grupo {
     @Column(name = "multimedia")
     private String multimedia;
 
+    @Column(name = "can_voto")
+    private int canVoto;
+
     @ManyToMany
     @JoinTable(
             name = "usuarios_grupos",
