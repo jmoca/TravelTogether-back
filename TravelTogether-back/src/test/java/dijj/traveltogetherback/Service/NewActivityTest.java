@@ -70,7 +70,8 @@ public class NewActivityTest {
         Actividad actividad = new Actividad();
         actividad.setNombre("Caminata");
         actividad.setDescripcion("Caminata al aire libre");
-        actividad.setFecha_fin(LocalDate.now().plusDays(1));
+        actividad.setFecha_inicio(LocalDate.now().plusDays(1));
+        actividad.setFecha_fin(LocalDate.now().plusDays(2));
         actividad.setLugar("Montaña");
 
         // Simular repositorios
@@ -107,7 +108,8 @@ public class NewActivityTest {
         Actividad actividad = new Actividad();
         actividad.setNombre("Caminata en el bosque");
         actividad.setDescripcion("Actividad para explorar la fauna local");
-        actividad.setFecha_inicio(LocalDate.now()); // Fecha válida
+        actividad.setFecha_inicio(LocalDate.now().plusDays(1));
+        actividad.setFecha_fin(LocalDate.now().plusDays(2));
         actividad.setLugar("Bosque Nacional");
 
         ActividadDTO actividadCreada = actividadServicio.crearActividad(usuario.getId_usuario(), grupo.getId_grupo(), actividad);
@@ -207,7 +209,8 @@ public class NewActivityTest {
         Actividad actividad = new Actividad();
         actividad.setNombre("Senderismo");
         actividad.setDescripcion("Caminata en senderos");
-        actividad.setFecha_fin(LocalDate.now().plusDays(1)); // Fecha válida
+        actividad.setFecha_inicio(LocalDate.now().plusDays(1));
+        actividad.setFecha_fin(LocalDate.now().plusDays(2));
         actividad.setLugar("Montaña");
 
         ActividadDTO actividadCreada = actividadServicio.crearActividad(usuario.getId_usuario(), grupo.getId_grupo(), actividad);

@@ -154,7 +154,7 @@ public class RemovePartiTests {
         assertEquals("No existe el grupo con el ID: 99", exception.getMessage());
 
         // Verificar que el grupo no ha sido modificado y sigue teniendo los mismos participantes
-        Optional<Grupo> grupoActualizado = grupoRepositorio.findById(1L);
+        Optional<Grupo> grupoActualizado = grupoRepositorio.findById(grupo.getId_grupo());
         assertTrue(grupoActualizado.isPresent(), "El grupo debería existir");
         assertEquals(0, grupoActualizado.get().getUsuarios().size(), "El grupo no debería tener participantes eliminados");
     }
@@ -171,7 +171,7 @@ public class RemovePartiTests {
 
         // Se crea un grupo con ID 1, el cual está presente en la base de datos
         Grupo grupo = new Grupo();
-        grupo.setId_grupo(2L); // Este grupo tiene un ID válido
+        grupo.setId_grupo(1L); // Este grupo tiene un ID válido
         grupo.setNombre("Viaje a la montaña");
         grupo.setDescripcion("Viaje grupal");
         grupo.setIntegrantes(5);
@@ -190,7 +190,7 @@ public class RemovePartiTests {
         assertEquals("No existe el grupo con el ID: 5", exception.getMessage());
 
         // Verificamos que el grupo con ID 1 no ha sido afectado
-        Optional<Grupo> grupoActualizado = grupoRepositorio.findById(1L);
+        Optional<Grupo> grupoActualizado = grupoRepositorio.findById(grupo.getId_grupo());
         assertTrue(grupoActualizado.isPresent(), "El grupo con ID 1 debe existir");
         assertEquals(0, grupoActualizado.get().getUsuarios().size(), "El grupo no debe tener participantes eliminados");
     }

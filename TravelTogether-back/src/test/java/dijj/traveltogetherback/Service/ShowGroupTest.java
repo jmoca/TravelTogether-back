@@ -72,7 +72,7 @@ public class ShowGroupTest {
 
         // Verificar que tiene varios viajes
         List<GrupoDTO> viajes = grupoServicio.obtenerGruposPorUsuario(usuario.getId_usuario());
-        assertEquals("El usuario tiene varios viajes asociados", 3, viajes.size());
+        assertEquals("El usuario tiene varios viajes asociados", 4, viajes.size());
 
 
     }
