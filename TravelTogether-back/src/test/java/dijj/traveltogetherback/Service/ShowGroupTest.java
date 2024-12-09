@@ -116,14 +116,14 @@ public class ShowGroupTest {
     @Test
     @DisplayName("Intentar listar viajes para un usuario no existente")
     void listarViajesUsuarioNoExistente() {
-        // Simular un usuario no existente
-        Usuario usuario = new Usuario();
-        usuario.setId_usuario(2L);
-        usuario.setNombre("Pedro");
+        // No insertamos el usuario en la base de datos
 
-        // Verificar que no se puede listar viajes para un usuario nulo
+        // Intentar obtener los grupos de un usuario inexistente
+        Long idUsuarioNoExistente = 2L;
+
+        // Verificar que se lanza IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> {
-            grupoServicio.obtenerGruposPorUsuario(usuario.getId_usuario());
+            grupoServicio.obtenerGruposPorUsuario(idUsuarioNoExistente);
         }, "Se esperaba una excepción por usuario inexistente");
     }
 
